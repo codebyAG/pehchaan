@@ -8,7 +8,10 @@ class RatePromptDialog extends StatelessWidget {
   const RatePromptDialog({super.key});
 
   static Future<void> show(BuildContext context) {
-    return showDialog(context: context, builder: (_) => const RatePromptDialog());
+    return showDialog(
+      context: context,
+      builder: (_) => const RatePromptDialog(),
+    );
   }
 
   @override
@@ -20,11 +23,20 @@ class RatePromptDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text('Later', style: AppTextStyles.body.copyWith(color: AppColors.mutedText)),
+          child: Text(
+            'Later',
+            style: AppTextStyles.body.copyWith(color: AppColors.mutedText),
+          ),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text('Rate on Play Store', style: AppTextStyles.body.copyWith(color: AppColors.violet600, fontWeight: FontWeight.w600)),
+          child: Text(
+            'Rate on Play Store',
+            style: AppTextStyles.body.copyWith(
+              color: AppColors.violet600,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ],
     );

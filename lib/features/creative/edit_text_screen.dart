@@ -36,14 +36,22 @@ class _EditTextScreenState extends State<EditTextScreen> {
   late final _headlineController = TextEditingController(text: widget.title);
   late final _priceController = TextEditingController(text: widget.priceText);
   final _subController = TextEditingController();
-  late final _businessController = TextEditingController(text: widget.businessName);
+  late final _businessController = TextEditingController(
+    text: widget.businessName,
+  );
   late final _phoneController = TextEditingController(text: widget.phone);
   _TextSize _size = _TextSize.m;
 
   @override
   void initState() {
     super.initState();
-    for (final c in [_headlineController, _priceController, _subController, _businessController, _phoneController]) {
+    for (final c in [
+      _headlineController,
+      _priceController,
+      _subController,
+      _businessController,
+      _phoneController,
+    ]) {
       c.addListener(() => setState(() {}));
     }
   }
@@ -90,13 +98,22 @@ class _EditTextScreenState extends State<EditTextScreen> {
               Expanded(
                 child: ListView(
                   children: [
-                    AppTextField(label: 'Headline', controller: _headlineController),
+                    AppTextField(
+                      label: 'Headline',
+                      controller: _headlineController,
+                    ),
                     const SizedBox(height: 12),
-                    AppTextField(label: 'Offer / price line', controller: _priceController),
+                    AppTextField(
+                      label: 'Offer / price line',
+                      controller: _priceController,
+                    ),
                     const SizedBox(height: 12),
                     AppTextField(label: 'Sub line', controller: _subController),
                     const SizedBox(height: 12),
-                    AppTextField(label: 'Business name', controller: _businessController),
+                    AppTextField(
+                      label: 'Business name',
+                      controller: _businessController,
+                    ),
                     const SizedBox(height: 12),
                     AppTextField(label: 'Phone', controller: _phoneController),
                     const SizedBox(height: 16),
@@ -105,9 +122,21 @@ class _EditTextScreenState extends State<EditTextScreen> {
                     Wrap(
                       spacing: 10,
                       children: [
-                        AppChip(label: 'S', selected: _size == _TextSize.s, onTap: () => setState(() => _size = _TextSize.s)),
-                        AppChip(label: 'M', selected: _size == _TextSize.m, onTap: () => setState(() => _size = _TextSize.m)),
-                        AppChip(label: 'L', selected: _size == _TextSize.l, onTap: () => setState(() => _size = _TextSize.l)),
+                        AppChip(
+                          label: 'S',
+                          selected: _size == _TextSize.s,
+                          onTap: () => setState(() => _size = _TextSize.s),
+                        ),
+                        AppChip(
+                          label: 'M',
+                          selected: _size == _TextSize.m,
+                          onTap: () => setState(() => _size = _TextSize.m),
+                        ),
+                        AppChip(
+                          label: 'L',
+                          selected: _size == _TextSize.l,
+                          onTap: () => setState(() => _size = _TextSize.l),
+                        ),
                       ],
                     ),
                   ],
@@ -116,7 +145,9 @@ class _EditTextScreenState extends State<EditTextScreen> {
               const SizedBox(height: 12),
               PrimaryButton(
                 label: 'Save changes',
-                onPressed: () => Navigator.of(context).pop((_headlineController.text, _priceController.text)),
+                onPressed: () => Navigator.of(
+                  context,
+                ).pop((_headlineController.text, _priceController.text)),
               ),
             ],
           ),

@@ -19,11 +19,17 @@ class CreativeDetailScreen extends StatelessWidget {
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Creative delete kar dein?', style: AppTextStyles.sectionHeading),
+        title: Text(
+          'Creative delete kar dein?',
+          style: AppTextStyles.sectionHeading,
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel', style: AppTextStyles.body.copyWith(color: AppColors.violet600)),
+            child: Text(
+              'Cancel',
+              style: AppTextStyles.body.copyWith(color: AppColors.violet600),
+            ),
           ),
           TextButton(
             onPressed: () {
@@ -31,7 +37,12 @@ class CreativeDetailScreen extends StatelessWidget {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },
-            child: Text('Delete', style: AppTextStyles.body.copyWith(color: const Color(0xFFD94A2B))),
+            child: Text(
+              'Delete',
+              style: AppTextStyles.body.copyWith(
+                color: const Color(0xFFD94A2B),
+              ),
+            ),
           ),
         ],
       ),
@@ -66,11 +77,36 @@ class CreativeDetailScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 children: [
-                  Text(creative.category.label, style: AppTextStyles.fieldLabel.copyWith(color: Colors.white)),
-                  Text(' · ', style: AppTextStyles.fieldLabel.copyWith(color: Colors.white54)),
-                  Text(creative.format.label, style: AppTextStyles.fieldLabel.copyWith(color: Colors.white)),
-                  Text(' · ', style: AppTextStyles.fieldLabel.copyWith(color: Colors.white54)),
-                  Text('${creative.createdAt.day}/${creative.createdAt.month}', style: AppTextStyles.fieldLabel.copyWith(color: Colors.white)),
+                  Text(
+                    creative.category.label,
+                    style: AppTextStyles.fieldLabel.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    ' · ',
+                    style: AppTextStyles.fieldLabel.copyWith(
+                      color: Colors.white54,
+                    ),
+                  ),
+                  Text(
+                    creative.format.label,
+                    style: AppTextStyles.fieldLabel.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    ' · ',
+                    style: AppTextStyles.fieldLabel.copyWith(
+                      color: Colors.white54,
+                    ),
+                  ),
+                  Text(
+                    '${creative.createdAt.day}/${creative.createdAt.month}',
+                    style: AppTextStyles.fieldLabel.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -100,7 +136,9 @@ class CreativeDetailScreen extends StatelessWidget {
                     icon: Icons.share_rounded,
                     label: 'Share',
                     onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Share sheet khul raha hai')),
+                      const SnackBar(
+                        content: Text('Share sheet khul raha hai'),
+                      ),
                     ),
                   ),
                   _ActionIcon(
@@ -117,7 +155,11 @@ class CreativeDetailScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  _ActionIcon(icon: Icons.delete_rounded, label: 'Delete', onTap: () => _confirmDelete(context)),
+                  _ActionIcon(
+                    icon: Icons.delete_rounded,
+                    label: 'Delete',
+                    onTap: () => _confirmDelete(context),
+                  ),
                 ],
               ),
             ),
@@ -129,7 +171,11 @@ class CreativeDetailScreen extends StatelessWidget {
 }
 
 class _ActionIcon extends StatelessWidget {
-  const _ActionIcon({required this.icon, required this.label, required this.onTap});
+  const _ActionIcon({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   final IconData icon;
   final String label;
@@ -146,7 +192,10 @@ class _ActionIcon extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.white, size: 24),
             const SizedBox(height: 6),
-            Text(label, style: AppTextStyles.fieldLabel.copyWith(color: Colors.white)),
+            Text(
+              label,
+              style: AppTextStyles.fieldLabel.copyWith(color: Colors.white),
+            ),
           ],
         ),
       ),

@@ -46,7 +46,12 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                       color: AppColors.violet100,
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child: Text('+91', style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w600)),
+                    child: Text(
+                      '+91',
+                      style: AppTextStyles.body.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -56,16 +61,23 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                         controller: _phoneController,
                         keyboardType: TextInputType.number,
                         maxLength: 10,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         onChanged: (_) => setState(() {}),
                         style: AppTextStyles.body,
                         decoration: InputDecoration(
                           counterText: '',
                           hintText: '98765 43210',
-                          hintStyle: AppTextStyles.body.copyWith(color: AppColors.mutedText),
+                          hintStyle: AppTextStyles.body.copyWith(
+                            color: AppColors.mutedText,
+                          ),
                           filled: true,
                           fillColor: AppColors.violet100,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 18,
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
                             borderSide: BorderSide.none,
@@ -76,7 +88,10 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(color: AppColors.violet600, width: 2),
+                            borderSide: const BorderSide(
+                              color: AppColors.violet600,
+                              width: 2,
+                            ),
                           ),
                         ),
                       ),
@@ -85,7 +100,10 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                 ],
               ),
               const SizedBox(height: 8),
-              Text('OTP se verify karenge. Koi password nahi.', style: AppTextStyles.fieldLabel),
+              Text(
+                'OTP se verify karenge. Koi password nahi.',
+                style: AppTextStyles.fieldLabel,
+              ),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
@@ -94,9 +112,15 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                     style: AppTextStyles.fieldLabel.copyWith(fontSize: 13),
                     children: const [
                       TextSpan(text: 'Continue karke aap hamari '),
-                      TextSpan(text: 'Terms', style: TextStyle(color: AppColors.violet600)),
+                      TextSpan(
+                        text: 'Terms',
+                        style: TextStyle(color: AppColors.violet600),
+                      ),
                       TextSpan(text: ' aur '),
-                      TextSpan(text: 'Privacy Policy', style: TextStyle(color: AppColors.violet600)),
+                      TextSpan(
+                        text: 'Privacy Policy',
+                        style: TextStyle(color: AppColors.violet600),
+                      ),
                       TextSpan(text: ' accept karte hain.'),
                     ],
                   ),

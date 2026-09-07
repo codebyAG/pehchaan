@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:pehchaan/core/models/creative.dart';
 import 'package:pehchaan/core/state/app_state.dart';
@@ -18,17 +17,43 @@ class HomeScreen extends StatelessWidget {
   final VoidCallback onSeeAllCreatives;
 
   static const _categories = [
-    (category: CreativeCategory.offer, icon: Icons.local_offer_rounded, style: CategoryTileStyle.violet),
-    (category: CreativeCategory.festival, icon: Icons.celebration_rounded, style: CategoryTileStyle.yellow),
-    (category: CreativeCategory.product, icon: Icons.shopping_bag_rounded, style: CategoryTileStyle.neutral),
-    (category: CreativeCategory.service, icon: Icons.content_cut_rounded, style: CategoryTileStyle.neutral),
-    (category: CreativeCategory.newArrival, icon: Icons.fiber_new_rounded, style: CategoryTileStyle.neutral),
-    (category: CreativeCategory.announcement, icon: Icons.campaign_rounded, style: CategoryTileStyle.neutral),
+    (
+      category: CreativeCategory.offer,
+      icon: Icons.local_offer_rounded,
+      style: CategoryTileStyle.violet,
+    ),
+    (
+      category: CreativeCategory.festival,
+      icon: Icons.celebration_rounded,
+      style: CategoryTileStyle.yellow,
+    ),
+    (
+      category: CreativeCategory.product,
+      icon: Icons.shopping_bag_rounded,
+      style: CategoryTileStyle.neutral,
+    ),
+    (
+      category: CreativeCategory.service,
+      icon: Icons.content_cut_rounded,
+      style: CategoryTileStyle.neutral,
+    ),
+    (
+      category: CreativeCategory.newArrival,
+      icon: Icons.fiber_new_rounded,
+      style: CategoryTileStyle.neutral,
+    ),
+    (
+      category: CreativeCategory.announcement,
+      icon: Icons.campaign_rounded,
+      style: CategoryTileStyle.neutral,
+    ),
   ];
 
   void _openCreate(BuildContext context, CreativeCategory category) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => CreativeInputScreen(category: category)),
+      MaterialPageRoute(
+        builder: (_) => CreativeInputScreen(category: category),
+      ),
     );
   }
 
@@ -65,7 +90,11 @@ class HomeScreen extends StatelessWidget {
                 HomeBanner(
                   asset: 'assets/banners/banner-3-free-plan.png',
                   onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Har mahine 5 creatives free — bina watermark ke')),
+                    const SnackBar(
+                      content: Text(
+                        'Har mahine 5 creatives free — bina watermark ke',
+                      ),
+                    ),
                   ),
                 ),
                 HomeBanner(
@@ -77,7 +106,12 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               'Aaj kya promote karna hai?',
-              style: GoogleFonts.nunito(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.violet900),
+              style: TextStyle(
+                fontFamily: 'Nunito',
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+                color: AppColors.violet900,
+              ),
             ),
             const SizedBox(height: 16),
             GridView.builder(
@@ -101,7 +135,9 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             const SizedBox(height: 20),
-            _FestivalNudgeCard(onCreate: () => _openCreate(context, CreativeCategory.festival)),
+            _FestivalNudgeCard(
+              onCreate: () => _openCreate(context, CreativeCategory.festival),
+            ),
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -112,7 +148,10 @@ class HomeScreen extends StatelessWidget {
                     onTap: onSeeAllCreatives,
                     child: Text(
                       'See all',
-                      style: AppTextStyles.fieldLabel.copyWith(color: AppColors.violet600, fontWeight: FontWeight.w600),
+                      style: AppTextStyles.fieldLabel.copyWith(
+                        color: AppColors.violet600,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
               ],
@@ -126,7 +165,10 @@ class HomeScreen extends StatelessWidget {
                   color: AppColors.violet100,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Text('Pehla creative banaiye — 1 minute lagega.', style: AppTextStyles.body),
+                child: Text(
+                  'Pehla creative banaiye — 1 minute lagega.',
+                  style: AppTextStyles.body,
+                ),
               )
             else
               SizedBox(
@@ -194,7 +236,10 @@ class _FestivalNudgeCard extends StatelessWidget {
             onPressed: onCreate,
             child: Text(
               'Create',
-              style: AppTextStyles.body.copyWith(color: AppColors.violet600, fontWeight: FontWeight.w700),
+              style: AppTextStyles.body.copyWith(
+                color: AppColors.violet600,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],

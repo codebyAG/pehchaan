@@ -94,12 +94,18 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  Text('+91 ${widget.phone} par bheja gaya · ', style: AppTextStyles.fieldLabel),
+                  Text(
+                    '+91 ${widget.phone} par bheja gaya · ',
+                    style: AppTextStyles.fieldLabel,
+                  ),
                   GestureDetector(
                     onTap: widget.onChangeNumber,
                     child: Text(
                       'Change',
-                      style: AppTextStyles.fieldLabel.copyWith(color: AppColors.violet600, fontWeight: FontWeight.w600),
+                      style: AppTextStyles.fieldLabel.copyWith(
+                        color: AppColors.violet600,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
@@ -132,13 +138,18 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: _error
-                              ? const BorderSide(color: Color(0xFFD94A2B), width: 2)
+                              ? const BorderSide(
+                                  color: Color(0xFFD94A2B),
+                                  width: 2,
+                                )
                               : BorderSide.none,
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                            color: _error ? const Color(0xFFD94A2B) : AppColors.violet600,
+                            color: _error
+                                ? const Color(0xFFD94A2B)
+                                : AppColors.violet600,
                             width: 2,
                           ),
                         ),
@@ -151,19 +162,26 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                 const SizedBox(height: 12),
                 Text(
                   'Galat OTP. Dobara try karein.',
-                  style: AppTextStyles.fieldLabel.copyWith(color: const Color(0xFFD94A2B)),
+                  style: AppTextStyles.fieldLabel.copyWith(
+                    color: const Color(0xFFD94A2B),
+                  ),
                 ),
               ],
               const SizedBox(height: 20),
               TextButton(
                 onPressed: _secondsLeft == 0 ? _startTimer : null,
-                style: TextButton.styleFrom(padding: EdgeInsets.zero, alignment: Alignment.centerLeft),
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  alignment: Alignment.centerLeft,
+                ),
                 child: Text(
                   _secondsLeft == 0
                       ? 'Dobara bhejein'
                       : 'Dobara bhejein (00:${_secondsLeft.toString().padLeft(2, '0')})',
                   style: AppTextStyles.body.copyWith(
-                    color: _secondsLeft == 0 ? AppColors.violet600 : AppColors.mutedText,
+                    color: _secondsLeft == 0
+                        ? AppColors.violet600
+                        : AppColors.mutedText,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -171,7 +189,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
               const Spacer(),
               PrimaryButton(
                 label: 'Verify',
-                onPressed: () => _verify(_controllers.map((c) => c.text).join()),
+                onPressed: () =>
+                    _verify(_controllers.map((c) => c.text).join()),
               ),
             ],
           ),

@@ -24,7 +24,9 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
   int _step = 1;
 
   final _nameController = TextEditingController();
-  late final _phoneController = TextEditingController(text: widget.prefilledPhone);
+  late final _phoneController = TextEditingController(
+    text: widget.prefilledPhone,
+  );
   String? _category;
 
   final _cityController = TextEditingController();
@@ -34,9 +36,21 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
   final List<String> _photos = [];
 
   static const _categories = [
-    'Tailor', 'Salon', 'Barber shop', 'Boutique', 'Kirana', 'Sweet shop',
-    'Mechanic', 'Mobile repair', 'Beauty parlour', 'Home business',
-    'Food / restaurant', 'Mehndi artist', 'Photographer', 'Retail shop', 'Other service',
+    'Tailor',
+    'Salon',
+    'Barber shop',
+    'Boutique',
+    'Kirana',
+    'Sweet shop',
+    'Mechanic',
+    'Mobile repair',
+    'Beauty parlour',
+    'Home business',
+    'Food / restaurant',
+    'Mehndi artist',
+    'Photographer',
+    'Retail shop',
+    'Other service',
   ];
 
   @override
@@ -87,7 +101,9 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
   void _finish() {
     widget.onComplete(
       Business(
-        name: _nameController.text.trim().isEmpty ? 'Mera Business' : _nameController.text.trim(),
+        name: _nameController.text.trim().isEmpty
+            ? 'Mera Business'
+            : _nameController.text.trim(),
         category: _category ?? 'Business',
         phone: _phoneController.text.trim(),
         city: _cityController.text.trim(),
@@ -109,14 +125,15 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
             children: [
               Align(
                 alignment: Alignment.centerRight,
-                child: Text('Step $_step of 3', style: AppTextStyles.fieldLabel),
+                child: Text(
+                  'Step $_step of 3',
+                  style: AppTextStyles.fieldLabel,
+                ),
               ),
               const SizedBox(height: 8),
               Text(_title(), style: AppTextStyles.screenTitle),
               const SizedBox(height: 24),
-              Expanded(
-                child: SingleChildScrollView(child: _stepBody()),
-              ),
+              Expanded(child: SingleChildScrollView(child: _stepBody())),
               const SizedBox(height: 12),
               _bottomActions(),
             ],
@@ -152,14 +169,21 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppTextField(label: 'Business name', hint: 'e.g. Raju Tailor', controller: _nameController),
+        AppTextField(
+          label: 'Business name',
+          hint: 'e.g. Raju Tailor',
+          controller: _nameController,
+        ),
         const SizedBox(height: 16),
         AppTextField(
           label: 'Category',
           hint: 'Select category',
           readOnly: true,
           controller: TextEditingController(text: _category ?? ''),
-          suffixIcon: const Icon(Icons.expand_more_rounded, color: AppColors.mutedText),
+          suffixIcon: const Icon(
+            Icons.expand_more_rounded,
+            color: AppColors.mutedText,
+          ),
           onTap: _pickCategory,
         ),
         const SizedBox(height: 16),
@@ -182,9 +206,17 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
           onPressed: _useMyLocation,
         ),
         const SizedBox(height: 16),
-        AppTextField(label: 'City', hint: 'e.g. Mumbai', controller: _cityController),
+        AppTextField(
+          label: 'City',
+          hint: 'e.g. Mumbai',
+          controller: _cityController,
+        ),
         const SizedBox(height: 16),
-        AppTextField(label: 'Area / market name', hint: 'e.g. Andheri West', controller: _areaController),
+        AppTextField(
+          label: 'Area / market name',
+          hint: 'e.g. Andheri West',
+          controller: _areaController,
+        ),
         const SizedBox(height: 16),
         AppTextField(
           label: 'Full address (optional)',
@@ -192,7 +224,10 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
           controller: _addressController,
         ),
         const SizedBox(height: 8),
-        Text('Yeh address creatives ke bottom par aayega.', style: AppTextStyles.fieldLabel),
+        Text(
+          'Yeh address creatives ke bottom par aayega.',
+          style: AppTextStyles.fieldLabel,
+        ),
       ],
     );
   }
@@ -201,7 +236,10 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('2–3 photos se creative achha banta hai.', style: AppTextStyles.fieldLabel),
+        Text(
+          '2–3 photos se creative achha banta hai.',
+          style: AppTextStyles.fieldLabel,
+        ),
         const SizedBox(height: 12),
         Wrap(
           spacing: 12,
@@ -211,7 +249,9 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
             return _PhotoSlot(
               filled: filled,
               onTap: () => setState(() => _photos.add('photo_$i')),
-              onRemove: filled ? () => setState(() => _photos.removeAt(i)) : null,
+              onRemove: filled
+                  ? () => setState(() => _photos.removeAt(i))
+                  : null,
             );
           }),
         ),
@@ -240,7 +280,13 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
           runSpacing: 10,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            for (final c in [AppColors.violet600, AppColors.yellow500, AppColors.violet900, Colors.teal, Colors.pink])
+            for (final c in [
+              AppColors.violet600,
+              AppColors.yellow500,
+              AppColors.violet900,
+              Colors.teal,
+              Colors.pink,
+            ])
               Container(
                 width: 32,
                 height: 32,
@@ -254,7 +300,10 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
               ),
               child: Text(
                 'Use Pehchaan colours',
-                style: AppTextStyles.fieldLabel.copyWith(color: AppColors.violet600, fontWeight: FontWeight.w600),
+                style: AppTextStyles.fieldLabel.copyWith(
+                  color: AppColors.violet600,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
@@ -265,15 +314,24 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
 
   Widget _bottomActions() {
     if (_step == 1) {
-      return PrimaryButton(label: 'Continue', onPressed: () => setState(() => _step = 2));
+      return PrimaryButton(
+        label: 'Continue',
+        onPressed: () => setState(() => _step = 2),
+      );
     }
     if (_step == 2) {
       return Column(
         children: [
-          PrimaryButton(label: 'Continue', onPressed: () => setState(() => _step = 3)),
+          PrimaryButton(
+            label: 'Continue',
+            onPressed: () => setState(() => _step = 3),
+          ),
           TextButton(
             onPressed: () => setState(() => _step = 3),
-            child: Text('Skip', style: AppTextStyles.body.copyWith(color: AppColors.mutedText)),
+            child: Text(
+              'Skip',
+              style: AppTextStyles.body.copyWith(color: AppColors.mutedText),
+            ),
           ),
         ],
       );
@@ -283,7 +341,10 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
         PrimaryButton(label: 'Finish setup', onPressed: _finish),
         TextButton(
           onPressed: _finish,
-          child: Text('Skip for now', style: AppTextStyles.body.copyWith(color: AppColors.mutedText)),
+          child: Text(
+            'Skip for now',
+            style: AppTextStyles.body.copyWith(color: AppColors.mutedText),
+          ),
         ),
       ],
     );
@@ -309,7 +370,11 @@ class _PhotoSlot extends StatelessWidget {
               color: AppColors.violet200,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Icon(Icons.storefront_rounded, color: AppColors.violet600, size: 32),
+            child: const Icon(
+              Icons.storefront_rounded,
+              color: AppColors.violet600,
+              size: 32,
+            ),
           ),
           Positioned(
             top: 6,
@@ -320,8 +385,15 @@ class _PhotoSlot extends StatelessWidget {
                 width: 22,
                 height: 22,
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(color: AppColors.violet900, shape: BoxShape.circle),
-                child: const Icon(Icons.close_rounded, color: Colors.white, size: 14),
+                decoration: const BoxDecoration(
+                  color: AppColors.violet900,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.close_rounded,
+                  color: Colors.white,
+                  size: 14,
+                ),
               ),
             ),
           ),
@@ -332,7 +404,10 @@ class _PhotoSlot extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: CustomPaint(
-        painter: _DashedBorderPainter(color: const Color(0xFFB9A6F0), radius: 16),
+        painter: _DashedBorderPainter(
+          color: const Color(0xFFB9A6F0),
+          radius: 16,
+        ),
         child: Container(
           width: 104,
           height: 104,
@@ -341,7 +416,11 @@ class _PhotoSlot extends StatelessWidget {
             color: AppColors.violet050,
             borderRadius: BorderRadius.circular(16),
           ),
-          child: const Icon(Icons.add_rounded, color: AppColors.violet600, size: 26),
+          child: const Icon(
+            Icons.add_rounded,
+            color: AppColors.violet600,
+            size: 26,
+          ),
         ),
       ),
     );
@@ -360,14 +439,20 @@ class _DashedBorderPainter extends CustomPainter {
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    final rrect = RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(radius));
+    final rrect = RRect.fromRectAndRadius(
+      Offset.zero & size,
+      Radius.circular(radius),
+    );
     final path = Path()..addRRect(rrect);
     const dashWidth = 6.0;
     const dashSpace = 4.0;
     for (final metric in path.computeMetrics()) {
       var distance = 0.0;
       while (distance < metric.length) {
-        canvas.drawPath(metric.extractPath(distance, distance + dashWidth), paint);
+        canvas.drawPath(
+          metric.extractPath(distance, distance + dashWidth),
+          paint,
+        );
         distance += dashWidth + dashSpace;
       }
     }

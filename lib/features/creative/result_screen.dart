@@ -49,21 +49,25 @@ class _ResultScreenState extends State<ResultScreen> {
         title: _title,
         priceText: _priceText,
         businessName: business?.name ?? 'Your Business',
-        phone: business?.phone.isNotEmpty == true ? business!.phone : '+91 98765 43210',
+        phone: business?.phone.isNotEmpty == true
+            ? business!.phone
+            : '+91 98765 43210',
         format: widget.format,
       ),
     );
     _saved = true;
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Saved in My creatives')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Saved in My creatives')));
   }
 
   @override
   Widget build(BuildContext context) {
     final business = AppStateScope.of(context).business;
     final businessName = business?.name ?? 'Your Business';
-    final phone = business?.phone.isNotEmpty == true ? business!.phone : '+91 98765 43210';
+    final phone = business?.phone.isNotEmpty == true
+        ? business!.phone
+        : '+91 98765 43210';
 
     return Scaffold(
       appBar: AppBar(title: const Text('Your creative')),
@@ -92,18 +96,19 @@ class _ResultScreenState extends State<ResultScreen> {
                 children: [
                   TextButton(
                     onPressed: () async {
-                      final result = await Navigator.of(context).push<(String, String)>(
-                        MaterialPageRoute(
-                          builder: (_) => EditTextScreen(
-                            category: widget.category,
-                            title: _title,
-                            priceText: _priceText,
-                            businessName: businessName,
-                            phone: phone,
-                            format: widget.format,
-                          ),
-                        ),
-                      );
+                      final result = await Navigator.of(context)
+                          .push<(String, String)>(
+                            MaterialPageRoute(
+                              builder: (_) => EditTextScreen(
+                                category: widget.category,
+                                title: _title,
+                                priceText: _priceText,
+                                businessName: businessName,
+                                phone: phone,
+                                format: widget.format,
+                              ),
+                            ),
+                          );
                       if (result != null) {
                         setState(() {
                           _title = result.$1;
@@ -111,15 +116,30 @@ class _ResultScreenState extends State<ResultScreen> {
                         });
                       }
                     },
-                    child: Text('Edit text', style: AppTextStyles.body.copyWith(color: AppColors.violet600, fontWeight: FontWeight.w600)),
+                    child: Text(
+                      'Edit text',
+                      style: AppTextStyles.body.copyWith(
+                        color: AppColors.violet600,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => CreativeInputScreen(category: widget.category)),
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              CreativeInputScreen(category: widget.category),
+                        ),
                       );
                     },
-                    child: Text('Change format', style: AppTextStyles.body.copyWith(color: AppColors.violet600, fontWeight: FontWeight.w600)),
+                    child: Text(
+                      'Change format',
+                      style: AppTextStyles.body.copyWith(
+                        color: AppColors.violet600,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ],
               ),

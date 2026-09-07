@@ -4,7 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pehchaan/app.dart';
 
 void main() {
-  testWidgets('Splash leads straight into Home with no login gate', (WidgetTester tester) async {
+  testWidgets('Splash leads straight into Home with no login gate', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const PehchaanApp());
     await tester.pump(const Duration(milliseconds: 1300));
 
@@ -16,7 +18,9 @@ void main() {
     expect(find.text('Aaj kya promote karna hai?'), findsOneWidget);
   });
 
-  testWidgets('Home shows the pre-seeded mock business and creatives', (WidgetTester tester) async {
+  testWidgets('Home shows the pre-seeded mock business and creatives', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const PehchaanApp());
     await tester.pump(const Duration(milliseconds: 1300));
 

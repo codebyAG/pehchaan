@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:pehchaan/core/state/app_state.dart';
 import 'package:pehchaan/core/theme/app_colors.dart';
@@ -27,11 +26,19 @@ class ProfileScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel', style: AppTextStyles.body.copyWith(color: AppColors.violet600)),
+            child: Text(
+              'Cancel',
+              style: AppTextStyles.body.copyWith(color: AppColors.violet600),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Log out', style: AppTextStyles.body.copyWith(color: const Color(0xFFD94A2B))),
+            child: Text(
+              'Log out',
+              style: AppTextStyles.body.copyWith(
+                color: const Color(0xFFD94A2B),
+              ),
+            ),
           ),
         ],
       ),
@@ -44,7 +51,11 @@ class ProfileScreen extends StatelessWidget {
     final business = appState.business;
     final creativeCount = appState.savedCreatives.length;
     final thisMonth = appState.savedCreatives
-        .where((c) => c.createdAt.month == DateTime.now().month && c.createdAt.year == DateTime.now().year)
+        .where(
+          (c) =>
+              c.createdAt.month == DateTime.now().month &&
+              c.createdAt.year == DateTime.now().year,
+        )
         .length;
 
     return Scaffold(
@@ -56,17 +67,30 @@ class ProfileScreen extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: AppColors.violet100, borderRadius: BorderRadius.circular(16)),
+              decoration: BoxDecoration(
+                color: AppColors.violet100,
+                borderRadius: BorderRadius.circular(16),
+              ),
               child: Row(
                 children: [
                   Container(
                     width: 56,
                     height: 56,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(color: AppColors.violet200, borderRadius: BorderRadius.circular(12)),
+                    decoration: BoxDecoration(
+                      color: AppColors.violet200,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: Text(
-                      business != null && business.name.isNotEmpty ? business.name[0].toUpperCase() : '?',
-                      style: GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.violet600),
+                      business != null && business.name.isNotEmpty
+                          ? business.name[0].toUpperCase()
+                          : '?',
+                      style: TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.violet600,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 14),
@@ -76,18 +100,34 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         Text(
                           business?.name ?? 'Your Business',
-                          style: GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.violet900),
+                          style: TextStyle(
+                            fontFamily: 'Nunito',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.violet900,
+                          ),
                         ),
                         const SizedBox(height: 2),
-                        Text('${business?.category ?? ''} · ${business?.location ?? ''}', style: AppTextStyles.fieldLabel),
+                        Text(
+                          '${business?.category ?? ''} · ${business?.location ?? ''}',
+                          style: AppTextStyles.fieldLabel,
+                        ),
                       ],
                     ),
                   ),
                   TextButton(
                     onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const EditBusinessScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const EditBusinessScreen(),
+                      ),
                     ),
-                    child: Text('Edit', style: AppTextStyles.body.copyWith(color: AppColors.violet600, fontWeight: FontWeight.w600)),
+                    child: Text(
+                      'Edit',
+                      style: AppTextStyles.body.copyWith(
+                        color: AppColors.violet600,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -95,43 +135,64 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 20),
             Row(
               children: [
-                Expanded(child: _StatTile(label: 'Creatives banaye', value: '$creativeCount')),
+                Expanded(
+                  child: _StatTile(
+                    label: 'Creatives banaye',
+                    value: '$creativeCount',
+                  ),
+                ),
                 const SizedBox(width: 12),
-                Expanded(child: _StatTile(label: 'Is mahine', value: '$thisMonth')),
+                Expanded(
+                  child: _StatTile(label: 'Is mahine', value: '$thisMonth'),
+                ),
                 const SizedBox(width: 12),
-                Expanded(child: _StatTile(label: 'Saved', value: '$creativeCount')),
+                Expanded(
+                  child: _StatTile(label: 'Saved', value: '$creativeCount'),
+                ),
               ],
             ),
             const SizedBox(height: 12),
             _Row(
               icon: Icons.image_rounded,
               label: 'My creatives',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const MyCreativesScreen())),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const MyCreativesScreen()),
+              ),
             ),
             _Row(
               icon: Icons.photo_library_rounded,
               label: 'Manage photos',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ManagePhotosScreen())),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const ManagePhotosScreen()),
+              ),
             ),
             _Row(
               icon: Icons.language_rounded,
               label: 'Language',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LanguageChangeScreen())),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const LanguageChangeScreen()),
+              ),
             ),
             _Row(
               icon: Icons.settings_rounded,
               label: 'Settings',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
+              onTap: () => Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
             ),
             _Row(
               icon: Icons.help_rounded,
               label: 'Help & FAQ',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const HelpFaqScreen())),
+              onTap: () => Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const HelpFaqScreen())),
             ),
             _Row(
               icon: Icons.support_agent_rounded,
               label: 'Contact support',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ContactSupportScreen())),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const ContactSupportScreen()),
+              ),
             ),
             _Row(
               icon: Icons.star_rounded,
@@ -148,16 +209,29 @@ class ProfileScreen extends StatelessWidget {
             _Row(
               icon: Icons.info_rounded,
               label: 'About',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AboutScreen())),
+              onTap: () => Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const AboutScreen())),
             ),
             const SizedBox(height: 12),
             Center(
               child: TextButton(
                 onPressed: () => _confirmLogout(context),
-                child: Text('Log out', style: AppTextStyles.body.copyWith(color: const Color(0xFFD94A2B), fontWeight: FontWeight.w600)),
+                child: Text(
+                  'Log out',
+                  style: AppTextStyles.body.copyWith(
+                    color: const Color(0xFFD94A2B),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ),
-            Center(child: Text('v1.0.0', style: AppTextStyles.fieldLabel.copyWith(fontSize: 13))),
+            Center(
+              child: Text(
+                'v1.0.0',
+                style: AppTextStyles.fieldLabel.copyWith(fontSize: 13),
+              ),
+            ),
           ],
         ),
       ),
@@ -175,11 +249,22 @@ class _StatTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(color: AppColors.violet050, borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(
+        color: AppColors.violet050,
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(value, style: GoogleFonts.nunito(fontSize: 24, fontWeight: FontWeight.w800, color: AppColors.violet900)),
+          Text(
+            value,
+            style: TextStyle(
+              fontFamily: 'Nunito',
+              fontSize: 24,
+              fontWeight: FontWeight.w800,
+              color: AppColors.violet900,
+            ),
+          ),
           const SizedBox(height: 4),
           Text(label, style: AppTextStyles.fieldLabel),
         ],
@@ -208,7 +293,12 @@ class _Row extends StatelessWidget {
           children: [
             Icon(icon, color: AppColors.violet600, size: 22),
             const SizedBox(width: 14),
-            Expanded(child: Text(label, style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w600))),
+            Expanded(
+              child: Text(
+                label,
+                style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ),
             const Icon(Icons.chevron_right_rounded, color: AppColors.mutedText),
           ],
         ),

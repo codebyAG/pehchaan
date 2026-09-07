@@ -23,12 +23,22 @@ class UpdateRequiredScreen extends StatelessWidget {
                 Container(
                   width: 120,
                   height: 120,
-                  decoration: BoxDecoration(color: AppColors.violet200, borderRadius: BorderRadius.circular(24)),
+                  decoration: BoxDecoration(
+                    color: AppColors.violet200,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
                   alignment: Alignment.center,
-                  child: const Icon(Icons.system_update_rounded, color: AppColors.violet600, size: 44),
+                  child: const Icon(
+                    Icons.system_update_rounded,
+                    color: AppColors.violet600,
+                    size: 44,
+                  ),
                 ),
                 const SizedBox(height: 20),
-                Text('Naya version aa gaya hai', style: AppTextStyles.sectionHeading),
+                Text(
+                  'Naya version aa gaya hai',
+                  style: AppTextStyles.sectionHeading,
+                ),
                 const SizedBox(height: 24),
                 PrimaryButton(label: 'Update now', onPressed: onUpdate),
               ],

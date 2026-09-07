@@ -62,7 +62,9 @@ class AppState extends ChangeNotifier {
   }
 
   void _seedMockCreatives(Business business) {
-    final phone = business.phone.isNotEmpty ? business.phone : '+91 98765 43210';
+    final phone = business.phone.isNotEmpty
+        ? business.phone
+        : '+91 98765 43210';
     savedCreatives.addAll([
       Creative(
         category: CreativeCategory.offer,

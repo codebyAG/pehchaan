@@ -31,24 +31,24 @@ class _FormatDownloadScreenState extends State<FormatDownloadScreen> {
   late CreativeFormat _selectedFormat = widget.format;
 
   void _saveToPhone() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Gallery mein save ho gaya')),
-    );
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => const SuccessScreen()),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Gallery mein save ho gaya')));
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const SuccessScreen()));
   }
 
   void _share(String appName) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$appName khul raha hai')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('$appName khul raha hai')));
   }
 
   void _moreApps() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Share sheet khul raha hai')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Share sheet khul raha hai')));
   }
 
   @override
@@ -82,13 +82,29 @@ class _FormatDownloadScreenState extends State<FormatDownloadScreen> {
             const SizedBox(height: 28),
             Text('Save & share', style: AppTextStyles.sectionHeading),
             const SizedBox(height: 12),
-            _ActionRow(icon: Icons.download_rounded, label: 'Save to phone', onTap: _saveToPhone),
+            _ActionRow(
+              icon: Icons.download_rounded,
+              label: 'Save to phone',
+              onTap: _saveToPhone,
+            ),
             const SizedBox(height: 12),
-            _ActionRow(icon: Icons.chat_bubble_rounded, label: 'Share on WhatsApp', onTap: () => _share('WhatsApp')),
+            _ActionRow(
+              icon: Icons.chat_bubble_rounded,
+              label: 'Share on WhatsApp',
+              onTap: () => _share('WhatsApp'),
+            ),
             const SizedBox(height: 12),
-            _ActionRow(icon: Icons.camera_alt_rounded, label: 'Share on Instagram', onTap: () => _share('Instagram')),
+            _ActionRow(
+              icon: Icons.camera_alt_rounded,
+              label: 'Share on Instagram',
+              onTap: () => _share('Instagram'),
+            ),
             const SizedBox(height: 12),
-            _ActionRow(icon: Icons.more_horiz_rounded, label: 'More apps', onTap: _moreApps),
+            _ActionRow(
+              icon: Icons.more_horiz_rounded,
+              label: 'More apps',
+              onTap: _moreApps,
+            ),
             const SizedBox(height: 20),
             Text(
               'Pehchaan aapki taraf se kuch post nahi karta — control aapke paas rehta hai.',
@@ -102,7 +118,11 @@ class _FormatDownloadScreenState extends State<FormatDownloadScreen> {
 }
 
 class _FormatTile extends StatelessWidget {
-  const _FormatTile({required this.format, required this.selected, required this.onTap});
+  const _FormatTile({
+    required this.format,
+    required this.selected,
+    required this.onTap,
+  });
 
   final CreativeFormat format;
   final bool selected;
@@ -110,7 +130,9 @@ class _FormatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = format == CreativeFormat.post ? 130.0 : (format == CreativeFormat.poster ? 118.0 : 96.0);
+    final width = format == CreativeFormat.post
+        ? 130.0
+        : (format == CreativeFormat.poster ? 118.0 : 96.0);
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
@@ -120,7 +142,10 @@ class _FormatTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: selected ? AppColors.violet600 : Colors.transparent, width: 3),
+          border: Border.all(
+            color: selected ? AppColors.violet600 : Colors.transparent,
+            width: 3,
+          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +162,13 @@ class _FormatTile extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Text(format.label, style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w600, fontSize: 15)),
+            Text(
+              format.label,
+              style: AppTextStyles.body.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
+              ),
+            ),
             Text(format.ratioLabel, style: AppTextStyles.fieldLabel),
           ],
         ),
@@ -147,7 +178,11 @@ class _FormatTile extends StatelessWidget {
 }
 
 class _ActionRow extends StatelessWidget {
-  const _ActionRow({required this.icon, required this.label, required this.onTap});
+  const _ActionRow({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   final IconData icon;
   final String label;
@@ -169,7 +204,12 @@ class _ActionRow extends StatelessWidget {
           children: [
             Icon(icon, color: AppColors.violet600, size: 22),
             const SizedBox(width: 14),
-            Expanded(child: Text(label, style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w600))),
+            Expanded(
+              child: Text(
+                label,
+                style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ),
             const Icon(Icons.chevron_right_rounded, color: AppColors.mutedText),
           ],
         ),

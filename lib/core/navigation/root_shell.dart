@@ -25,7 +25,9 @@ class _RootShellState extends State<RootShell> {
     final category = await TypePickerSheet.show(context);
     if (category != null && mounted) {
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => CreativeInputScreen(category: category)),
+        MaterialPageRoute(
+          builder: (_) => CreativeInputScreen(category: category),
+        ),
       );
     }
   }
@@ -50,7 +52,10 @@ class _RootShellState extends State<RootShell> {
           const ProfileScreen(),
         ],
       ),
-      bottomNavigationBar: AppBottomNav(currentIndex: _tabIndex, onTap: _onNavTap),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: _tabIndex,
+        onTap: _onNavTap,
+      ),
     );
   }
 }

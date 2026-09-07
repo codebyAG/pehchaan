@@ -26,7 +26,9 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
   }
 
   void _snack(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -62,15 +64,26 @@ class _ContactSupportScreenState extends State<ContactSupportScreen> {
               style: AppTextStyles.body,
               decoration: InputDecoration(
                 hintText: 'Apna feedback likhein',
-                hintStyle: AppTextStyles.body.copyWith(color: AppColors.mutedText),
+                hintStyle: AppTextStyles.body.copyWith(
+                  color: AppColors.mutedText,
+                ),
                 filled: true,
                 fillColor: AppColors.violet100,
                 contentPadding: const EdgeInsets.all(16),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
-                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide.none,
+                ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
-                  borderSide: const BorderSide(color: AppColors.violet600, width: 2),
+                  borderSide: const BorderSide(
+                    color: AppColors.violet600,
+                    width: 2,
+                  ),
                 ),
               ),
             ),
@@ -96,12 +109,19 @@ class _Row extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 60,
-        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: AppColors.divider))),
+        decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: AppColors.divider)),
+        ),
         child: Row(
           children: [
             Icon(icon, color: AppColors.violet600, size: 22),
             const SizedBox(width: 14),
-            Expanded(child: Text(label, style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w600))),
+            Expanded(
+              child: Text(
+                label,
+                style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ),
             const Icon(Icons.chevron_right_rounded, color: AppColors.mutedText),
           ],
         ),

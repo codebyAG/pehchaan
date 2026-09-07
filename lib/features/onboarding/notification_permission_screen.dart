@@ -26,10 +26,17 @@ class NotificationPermissionScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 alignment: Alignment.center,
-                child: const Icon(Icons.notifications_active_rounded, color: AppColors.violet600, size: 48),
+                child: const Icon(
+                  Icons.notifications_active_rounded,
+                  color: AppColors.violet600,
+                  size: 48,
+                ),
               ),
               const SizedBox(height: 24),
-              Text('Festival reminders chahiye?', style: AppTextStyles.screenTitle),
+              Text(
+                'Festival reminders chahiye?',
+                style: AppTextStyles.screenTitle,
+              ),
               const SizedBox(height: 12),
               Text(
                 'Diwali, Holi, Eid se pehle hum aapko creative banane ki yaad dila denge.',
@@ -39,7 +46,12 @@ class NotificationPermissionScreen extends StatelessWidget {
               PrimaryButton(label: 'Allow notifications', onPressed: onDone),
               TextButton(
                 onPressed: onDone,
-                child: Text('Not now', style: AppTextStyles.body.copyWith(color: AppColors.mutedText)),
+                child: Text(
+                  'Not now',
+                  style: AppTextStyles.body.copyWith(
+                    color: AppColors.mutedText,
+                  ),
+                ),
               ),
             ],
           ),

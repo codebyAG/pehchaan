@@ -78,7 +78,9 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
     final title = _primaryController.text.trim().isEmpty
         ? '${widget.category.label} Special'
         : _primaryController.text.trim();
-    final priceText = _priceController.text.trim().isEmpty ? '₹999' : '₹${_priceController.text.trim()}';
+    final priceText = _priceController.text.trim().isEmpty
+        ? '₹999'
+        : '₹${_priceController.text.trim()}';
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => GeneratingScreen(
@@ -160,16 +162,29 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
     switch (widget.category) {
       case CreativeCategory.offer:
         return [
-          AppTextField(label: 'Offer text', hint: 'e.g. Shirt + Pant Stitching', controller: _primaryController),
+          AppTextField(
+            label: 'Offer text',
+            hint: 'e.g. Shirt + Pant Stitching',
+            controller: _primaryController,
+          ),
           const SizedBox(height: 16),
           Row(
             children: [
               Expanded(
-                child: AppTextField(label: 'Price', hint: '999', controller: _priceController, keyboardType: TextInputType.number),
+                child: AppTextField(
+                  label: 'Price',
+                  hint: '999',
+                  controller: _priceController,
+                  keyboardType: TextInputType.number,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: AppTextField(label: 'Occasion', hint: 'e.g. Diwali', controller: _secondaryController),
+                child: AppTextField(
+                  label: 'Occasion',
+                  hint: 'e.g. Diwali',
+                  controller: _secondaryController,
+                ),
               ),
             ],
           ),
@@ -183,37 +198,80 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
             runSpacing: 10,
             children: [
               for (final f in ['Diwali', 'Holi', 'Eid', 'Rakhi', 'Christmas'])
-                AppChip(label: f, selected: _secondaryController.text == f, onTap: () => setState(() => _secondaryController.text = f)),
+                AppChip(
+                  label: f,
+                  selected: _secondaryController.text == f,
+                  onTap: () => setState(() => _secondaryController.text = f),
+                ),
             ],
           ),
           const SizedBox(height: 16),
-          AppTextField(label: 'Greeting or offer text', hint: 'e.g. Festive Special', controller: _primaryController),
+          AppTextField(
+            label: 'Greeting or offer text',
+            hint: 'e.g. Festive Special',
+            controller: _primaryController,
+          ),
           const SizedBox(height: 16),
-          AppTextField(label: 'Price (optional)', hint: '999', controller: _priceController, keyboardType: TextInputType.number),
+          AppTextField(
+            label: 'Price (optional)',
+            hint: '999',
+            controller: _priceController,
+            keyboardType: TextInputType.number,
+          ),
         ];
       case CreativeCategory.product:
         return [
-          AppTextField(label: 'Product name', hint: 'e.g. Festive Saree', controller: _primaryController),
+          AppTextField(
+            label: 'Product name',
+            hint: 'e.g. Festive Saree',
+            controller: _primaryController,
+          ),
           const SizedBox(height: 16),
-          AppTextField(label: 'Price', hint: '999', controller: _priceController, keyboardType: TextInputType.number),
+          AppTextField(
+            label: 'Price',
+            hint: '999',
+            controller: _priceController,
+            keyboardType: TextInputType.number,
+          ),
           const SizedBox(height: 16),
           _photoStrip(),
         ];
       case CreativeCategory.service:
         return [
-          AppTextField(label: 'Service name', hint: 'e.g. Hair Spa', controller: _primaryController),
+          AppTextField(
+            label: 'Service name',
+            hint: 'e.g. Hair Spa',
+            controller: _primaryController,
+          ),
           const SizedBox(height: 16),
-          AppTextField(label: 'Starting price', hint: '499', controller: _priceController, keyboardType: TextInputType.number),
+          AppTextField(
+            label: 'Starting price',
+            hint: '499',
+            controller: _priceController,
+            keyboardType: TextInputType.number,
+          ),
           const SizedBox(height: 16),
-          AppTextField(label: 'One benefit line', hint: 'e.g. Perfect fit, quality service', controller: _secondaryController),
+          AppTextField(
+            label: 'One benefit line',
+            hint: 'e.g. Perfect fit, quality service',
+            controller: _secondaryController,
+          ),
         ];
       case CreativeCategory.newArrival:
         return [
-          AppTextField(label: 'Collection / product name', hint: 'e.g. Festive Collection 2026', controller: _primaryController),
+          AppTextField(
+            label: 'Collection / product name',
+            hint: 'e.g. Festive Collection 2026',
+            controller: _primaryController,
+          ),
           const SizedBox(height: 16),
           _photoStrip(),
           const SizedBox(height: 16),
-          AppTextField(label: 'One line', hint: 'e.g. Visit our store', controller: _secondaryController),
+          AppTextField(
+            label: 'One line',
+            hint: 'e.g. Visit our store',
+            controller: _secondaryController,
+          ),
         ];
       case CreativeCategory.announcement:
         return [
@@ -227,17 +285,33 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
               hintText: 'e.g. Shop will remain closed on Monday',
               filled: true,
               fillColor: AppColors.violet100,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
-              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 18,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide.none,
+              ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: AppColors.violet600, width: 2),
+                borderSide: const BorderSide(
+                  color: AppColors.violet600,
+                  width: 2,
+                ),
               ),
             ),
           ),
           const SizedBox(height: 16),
-          AppTextField(label: 'Date / time (optional)', hint: 'e.g. 12 Oct, 10 AM', controller: _secondaryController),
+          AppTextField(
+            label: 'Date / time (optional)',
+            hint: 'e.g. 12 Oct, 10 AM',
+            controller: _secondaryController,
+          ),
         ];
     }
   }
@@ -254,8 +328,14 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
               child: Container(
                 width: 84,
                 height: 84,
-                decoration: BoxDecoration(color: AppColors.violet200, borderRadius: BorderRadius.circular(14)),
-                child: const Icon(Icons.image_rounded, color: AppColors.violet600),
+                decoration: BoxDecoration(
+                  color: AppColors.violet200,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(
+                  Icons.image_rounded,
+                  color: AppColors.violet600,
+                ),
               ),
             ),
           InkWell(
@@ -265,7 +345,10 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
               width: 84,
               height: 84,
               alignment: Alignment.center,
-              decoration: BoxDecoration(color: AppColors.violet100, borderRadius: BorderRadius.circular(14)),
+              decoration: BoxDecoration(
+                color: AppColors.violet100,
+                borderRadius: BorderRadius.circular(14),
+              ),
               child: const Icon(Icons.add_rounded, color: AppColors.violet600),
             ),
           ),

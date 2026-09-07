@@ -17,11 +17,26 @@ class _HelpFaqScreenState extends State<HelpFaqScreen> {
   int? _expanded;
 
   static const _faqs = [
-    ('Creative kaise banaye?', 'Home par category choose karein, details bharein aur "Generate creative" dabayein.'),
-    ('Photo kaise upload karein?', 'Creative input screen par photo strip mein "+" par tap karein.'),
-    ('Download kahan jata hai?', 'Aapki phone ki Gallery ke "Pehchaan" folder mein.'),
-    ('Instagram par kaise post karein?', 'Download screen par "Share on Instagram" choose karein.'),
-    ('Language kaise badle?', 'Profile > Language mein jaakar apni pasand ki language choose karein.'),
+    (
+      'Creative kaise banaye?',
+      'Home par category choose karein, details bharein aur "Generate creative" dabayein.',
+    ),
+    (
+      'Photo kaise upload karein?',
+      'Creative input screen par photo strip mein "+" par tap karein.',
+    ),
+    (
+      'Download kahan jata hai?',
+      'Aapki phone ki Gallery ke "Pehchaan" folder mein.',
+    ),
+    (
+      'Instagram par kaise post karein?',
+      'Download screen par "Share on Instagram" choose karein.',
+    ),
+    (
+      'Language kaise badle?',
+      'Profile > Language mein jaakar apni pasand ki language choose karein.',
+    ),
     ('Refund policy', 'Pehchaan free plan par refund applicable nahi hai.'),
   ];
 
@@ -47,15 +62,29 @@ class _HelpFaqScreenState extends State<HelpFaqScreen> {
                 style: AppTextStyles.body,
                 decoration: InputDecoration(
                   hintText: 'Apna sawaal search karein',
-                  hintStyle: AppTextStyles.body.copyWith(color: AppColors.mutedText),
+                  hintStyle: AppTextStyles.body.copyWith(
+                    color: AppColors.mutedText,
+                  ),
                   filled: true,
                   fillColor: AppColors.violet100,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 14,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide.none,
+                  ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.violet600, width: 2),
+                    borderSide: const BorderSide(
+                      color: AppColors.violet600,
+                      width: 2,
+                    ),
                   ),
                 ),
               ),
@@ -68,19 +97,30 @@ class _HelpFaqScreenState extends State<HelpFaqScreen> {
                     final expanded = _expanded == i;
                     return Container(
                       padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(color: AppColors.violet100, borderRadius: BorderRadius.circular(14)),
+                      decoration: BoxDecoration(
+                        color: AppColors.violet100,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           InkWell(
-                            onTap: () => setState(() => _expanded = expanded ? null : i),
+                            onTap: () =>
+                                setState(() => _expanded = expanded ? null : i),
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: Text(_faqs[i].$1, style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w600)),
+                                  child: Text(
+                                    _faqs[i].$1,
+                                    style: AppTextStyles.body.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ),
                                 Icon(
-                                  expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+                                  expanded
+                                      ? Icons.expand_less_rounded
+                                      : Icons.expand_more_rounded,
                                   color: AppColors.violet600,
                                 ),
                               ],
@@ -102,7 +142,9 @@ class _HelpFaqScreenState extends State<HelpFaqScreen> {
               PrimaryButton(
                 label: 'Contact support',
                 onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const ContactSupportScreen()),
+                  MaterialPageRoute(
+                    builder: (_) => const ContactSupportScreen(),
+                  ),
                 ),
               ),
             ],

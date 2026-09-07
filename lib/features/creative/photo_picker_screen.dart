@@ -22,9 +22,9 @@ class _PhotoPickerScreenState extends State<PhotoPickerScreen> {
   static const _tabs = ['My photos', 'Gallery', 'Camera'];
 
   Future<void> _usePhoto() async {
-    final cropped = await Navigator.of(context).push<String>(
-      MaterialPageRoute(builder: (_) => const CropScreen()),
-    );
+    final cropped = await Navigator.of(
+      context,
+    ).push<String>(MaterialPageRoute(builder: (_) => const CropScreen()));
     if (cropped != null && mounted) {
       Navigator.of(context).pop(cropped);
     }
@@ -74,17 +74,26 @@ class _PhotoPickerScreenState extends State<PhotoPickerScreen> {
                         decoration: BoxDecoration(
                           color: AppColors.violet200,
                           borderRadius: BorderRadius.circular(8),
-                          border: selected ? Border.all(color: AppColors.violet600, width: 3) : null,
+                          border: selected
+                              ? Border.all(color: AppColors.violet600, width: 3)
+                              : null,
                         ),
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            const Icon(Icons.image_rounded, color: AppColors.violet600),
+                            const Icon(
+                              Icons.image_rounded,
+                              color: AppColors.violet600,
+                            ),
                             if (selected)
                               const Positioned(
                                 top: 6,
                                 right: 6,
-                                child: Icon(Icons.check_circle_rounded, color: AppColors.violet600, size: 18),
+                                child: Icon(
+                                  Icons.check_circle_rounded,
+                                  color: AppColors.violet600,
+                                  size: 18,
+                                ),
                               ),
                           ],
                         ),
@@ -94,7 +103,10 @@ class _PhotoPickerScreenState extends State<PhotoPickerScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              PrimaryButton(label: 'Use photo', onPressed: _selected == null ? null : _usePhoto),
+              PrimaryButton(
+                label: 'Use photo',
+                onPressed: _selected == null ? null : _usePhoto,
+              ),
             ],
           ),
         ),
@@ -104,7 +116,11 @@ class _PhotoPickerScreenState extends State<PhotoPickerScreen> {
 }
 
 class _TabChip extends StatelessWidget {
-  const _TabChip({required this.label, required this.selected, required this.onTap});
+  const _TabChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   final String label;
   final bool selected;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:pehchaan/core/theme/app_colors.dart';
 import 'package:pehchaan/core/theme/app_text_styles.dart';
@@ -24,9 +23,18 @@ class _IntroSlidesScreenState extends State<IntroSlidesScreen> {
   int _index = 0;
 
   static const _slides = [
-    _Slide('Business ki post, minutes mein', 'Designer ke bina professional creatives.'),
-    _Slide('Offer, festival, product — sab', 'Jo promote karna hai, bas likh do.'),
-    _Slide('Download karo, kahin bhi use karo', 'Instagram, WhatsApp, print — aapki choice.'),
+    _Slide(
+      'Business ki post, minutes mein',
+      'Designer ke bina professional creatives.',
+    ),
+    _Slide(
+      'Offer, festival, product — sab',
+      'Jo promote karna hai, bas likh do.',
+    ),
+    _Slide(
+      'Download karo, kahin bhi use karo',
+      'Instagram, WhatsApp, print — aapki choice.',
+    ),
   ];
 
   @override
@@ -40,7 +48,10 @@ class _IntroSlidesScreenState extends State<IntroSlidesScreen> {
       widget.onDone();
       return;
     }
-    _controller.nextPage(duration: const Duration(milliseconds: 260), curve: Curves.easeOut);
+    _controller.nextPage(
+      duration: const Duration(milliseconds: 260),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
@@ -58,7 +69,10 @@ class _IntroSlidesScreenState extends State<IntroSlidesScreen> {
                   onPressed: widget.onDone,
                   child: Text(
                     'Skip',
-                    style: AppTextStyles.body.copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+                    style: AppTextStyles.body.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -80,7 +94,9 @@ class _IntroSlidesScreenState extends State<IntroSlidesScreen> {
                   width: active ? 20 : 8,
                   height: 8,
                   decoration: BoxDecoration(
-                    color: active ? AppColors.yellow500 : const Color(0xFF8B6BE8),
+                    color: active
+                        ? AppColors.yellow500
+                        : const Color(0xFF8B6BE8),
                     borderRadius: BorderRadius.circular(999),
                   ),
                 );
@@ -97,11 +113,15 @@ class _IntroSlidesScreenState extends State<IntroSlidesScreen> {
                     backgroundColor: Colors.white,
                     foregroundColor: AppColors.violet600,
                     elevation: 0,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                   ),
                   child: Text(
                     _index == _slides.length - 1 ? 'Get started' : 'Next',
-                    style: AppTextStyles.buttonLabel.copyWith(color: AppColors.violet600),
+                    style: AppTextStyles.buttonLabel.copyWith(
+                      color: AppColors.violet600,
+                    ),
                   ),
                 ),
               ),
@@ -147,7 +167,8 @@ class _SlideView extends StatelessWidget {
                 Text(
                   slide.title,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.nunito(
+                  style: TextStyle(
+                    fontFamily: 'Nunito',
                     fontSize: 25,
                     fontWeight: FontWeight.w800,
                     height: 1.15,
@@ -158,7 +179,9 @@ class _SlideView extends StatelessWidget {
                 Text(
                   slide.sub,
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.body.copyWith(color: AppColors.textOnViolet),
+                  style: AppTextStyles.body.copyWith(
+                    color: AppColors.textOnViolet,
+                  ),
                 ),
               ],
             ),

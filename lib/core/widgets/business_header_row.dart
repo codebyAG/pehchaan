@@ -18,7 +18,9 @@ class BusinessHeaderRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final initial = businessName.isNotEmpty ? businessName[0].toUpperCase() : '?';
+    final initial = businessName.isNotEmpty
+        ? businessName[0].toUpperCase()
+        : '?';
     return Row(
       children: [
         Container(

@@ -27,7 +27,9 @@ class _MyCreativesScreenState extends State<MyCreativesScreen> {
     final category = await TypePickerSheet.show(context);
     if (category != null && mounted) {
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => CreativeInputScreen(category: category)),
+        MaterialPageRoute(
+          builder: (_) => CreativeInputScreen(category: category),
+        ),
       );
     }
   }
@@ -40,21 +42,34 @@ class _MyCreativesScreenState extends State<MyCreativesScreen> {
         backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
-          toDelete.length == 1 ? 'Creative delete kar dein?' : '${toDelete.length} creatives delete kar dein?',
+          toDelete.length == 1
+              ? 'Creative delete kar dein?'
+              : '${toDelete.length} creatives delete kar dein?',
           style: AppTextStyles.sectionHeading,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel', style: AppTextStyles.body.copyWith(color: AppColors.violet600)),
+            child: Text(
+              'Cancel',
+              style: AppTextStyles.body.copyWith(color: AppColors.violet600),
+            ),
           ),
           TextButton(
             onPressed: () {
-              AppStateScope.of(context, listen: false).removeCreatives(toDelete);
+              AppStateScope.of(
+                context,
+                listen: false,
+              ).removeCreatives(toDelete);
               setState(_selected.clear);
               Navigator.of(context).pop();
             },
-            child: Text('Delete', style: AppTextStyles.body.copyWith(color: const Color(0xFFD94A2B))),
+            child: Text(
+              'Delete',
+              style: AppTextStyles.body.copyWith(
+                color: const Color(0xFFD94A2B),
+              ),
+            ),
           ),
         ],
       ),
@@ -62,9 +77,9 @@ class _MyCreativesScreenState extends State<MyCreativesScreen> {
   }
 
   void _shareSelected() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Share sheet khul raha hai')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Share sheet khul raha hai')));
     setState(_selected.clear);
   }
 
@@ -72,11 +87,15 @@ class _MyCreativesScreenState extends State<MyCreativesScreen> {
   Widget build(BuildContext context) {
     final appState = AppStateScope.of(context);
     final all = appState.savedCreatives;
-    final creatives = _filter == null ? all : all.where((c) => c.category == _filter).toList();
+    final creatives = _filter == null
+        ? all
+        : all.where((c) => c.category == _filter).toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_selectionMode ? '${_selected.length} selected' : 'My creatives'),
+        title: Text(
+          _selectionMode ? '${_selected.length} selected' : 'My creatives',
+        ),
         actions: _selectionMode
             ? [
                 IconButton(
@@ -109,10 +128,18 @@ class _MyCreativesScreenState extends State<MyCreativesScreen> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    _FilterChip(label: 'All', selected: _filter == null, onTap: () => setState(() => _filter = null)),
+                    _FilterChip(
+                      label: 'All',
+                      selected: _filter == null,
+                      onTap: () => setState(() => _filter = null),
+                    ),
                     for (final c in CreativeCategory.values) ...[
                       const SizedBox(width: 10),
-                      _FilterChip(label: c.label, selected: _filter == c, onTap: () => setState(() => _filter = c)),
+                      _FilterChip(
+                        label: c.label,
+                        selected: _filter == c,
+                        onTap: () => setState(() => _filter = c),
+                      ),
                     ],
                   ],
                 ),
@@ -123,12 +150,13 @@ class _MyCreativesScreenState extends State<MyCreativesScreen> {
                     ? _EmptyState(onCreate: _newCreative)
                     : GridView.builder(
                         itemCount: creatives.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 12,
-                          childAspectRatio: 0.85,
-                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 12,
+                              crossAxisSpacing: 12,
+                              childAspectRatio: 0.85,
+                            ),
                         itemBuilder: (context, i) {
                           final creative = creatives[i];
                           return _CreativeTile(
@@ -136,11 +164,18 @@ class _MyCreativesScreenState extends State<MyCreativesScreen> {
                             selected: _selected.contains(i),
                             onTap: () {
                               if (_selectionMode) {
-                                setState(() => _selected.contains(i) ? _selected.remove(i) : _selected.add(i));
+                                setState(
+                                  () => _selected.contains(i)
+                                      ? _selected.remove(i)
+                                      : _selected.add(i),
+                                );
                                 return;
                               }
                               Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => CreativeDetailScreen(creative: creative)),
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      CreativeDetailScreen(creative: creative),
+                                ),
                               );
                             },
                             onLongPress: () => setState(() => _selected.add(i)),
@@ -161,7 +196,11 @@ class _MyCreativesScreenState extends State<MyCreativesScreen> {
 }
 
 class _FilterChip extends StatelessWidget {
-  const _FilterChip({required this.label, required this.selected, required this.onTap});
+  const _FilterChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   final String label;
   final bool selected;
@@ -217,17 +256,25 @@ class _CreativeTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.violet600,
           borderRadius: BorderRadius.circular(16),
-          border: selected ? Border.all(color: AppColors.yellow500, width: 3) : null,
+          border: selected
+              ? Border.all(color: AppColors.yellow500, width: 3)
+              : null,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(color: AppColors.yellow500, borderRadius: BorderRadius.circular(999)),
+              decoration: BoxDecoration(
+                color: AppColors.yellow500,
+                borderRadius: BorderRadius.circular(999),
+              ),
               child: Text(
                 creative.category.label,
-                style: AppTextStyles.eyebrow.copyWith(color: AppColors.violet900, fontSize: 11),
+                style: AppTextStyles.eyebrow.copyWith(
+                  color: AppColors.violet900,
+                  fontSize: 11,
+                ),
               ),
             ),
             const Spacer(),
@@ -235,14 +282,26 @@ class _CreativeTile extends StatelessWidget {
               creative.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.body.copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+              style: AppTextStyles.body.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: 4),
-            Text(creative.priceText, style: AppTextStyles.sectionHeading.copyWith(color: Colors.white, fontSize: 20)),
+            Text(
+              creative.priceText,
+              style: AppTextStyles.sectionHeading.copyWith(
+                color: Colors.white,
+                fontSize: 20,
+              ),
+            ),
             const SizedBox(height: 6),
             Text(
               _formatDate(creative.createdAt),
-              style: AppTextStyles.fieldLabel.copyWith(color: AppColors.textOnViolet, fontSize: 12),
+              style: AppTextStyles.fieldLabel.copyWith(
+                color: AppColors.textOnViolet,
+                fontSize: 12,
+              ),
             ),
           ],
         ),
@@ -251,7 +310,20 @@ class _CreativeTile extends StatelessWidget {
   }
 
   String _formatDate(DateTime d) {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     return '${d.day} ${months[d.month - 1]}';
   }
 }
@@ -272,14 +344,24 @@ class _EmptyState extends StatelessWidget {
             Container(
               width: 120,
               height: 120,
-              decoration: BoxDecoration(color: AppColors.violet200, borderRadius: BorderRadius.circular(24)),
+              decoration: BoxDecoration(
+                color: AppColors.violet200,
+                borderRadius: BorderRadius.circular(24),
+              ),
               alignment: Alignment.center,
-              child: const Icon(Icons.image_rounded, color: AppColors.violet600, size: 44),
+              child: const Icon(
+                Icons.image_rounded,
+                color: AppColors.violet600,
+                size: 44,
+              ),
             ),
             const SizedBox(height: 20),
             Text('Abhi koi creative nahi', style: AppTextStyles.sectionHeading),
             const SizedBox(height: 20),
-            PrimaryButton(label: 'Create your first creative', onPressed: onCreate),
+            PrimaryButton(
+              label: 'Create your first creative',
+              onPressed: onCreate,
+            ),
           ],
         ),
       ),

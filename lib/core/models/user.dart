@@ -16,7 +16,11 @@ extension AppLanguageLabel on AppLanguage {
 enum AppPlan { free, paid }
 
 class AppUser {
-  const AppUser({required this.phone, this.language = AppLanguage.hinglish, this.plan = AppPlan.free});
+  const AppUser({
+    required this.phone,
+    this.language = AppLanguage.hinglish,
+    this.plan = AppPlan.free,
+  });
 
   final String phone;
   final AppLanguage language;

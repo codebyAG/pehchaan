@@ -34,7 +34,10 @@ class _LanguageSelectScreenState extends State<LanguageSelectScreen> {
             children: [
               Text('Choose your language', style: AppTextStyles.screenTitle),
               const SizedBox(height: 8),
-              Text('Aap ise baad mein badal sakte hain.', style: AppTextStyles.fieldLabel),
+              Text(
+                'Aap ise baad mein badal sakte hain.',
+                style: AppTextStyles.fieldLabel,
+              ),
               const SizedBox(height: 24),
               Expanded(
                 child: ListView(
@@ -47,15 +50,27 @@ class _LanguageSelectScreenState extends State<LanguageSelectScreen> {
                       ),
                       const SizedBox(height: 12),
                     ],
-                    _LanguageRow(label: 'मराठी', selected: false, disabled: true, onTap: () {}),
+                    _LanguageRow(
+                      label: 'मराठी',
+                      selected: false,
+                      disabled: true,
+                      onTap: () {},
+                    ),
                     const SizedBox(height: 12),
-                    _LanguageRow(label: 'ગુજરાતી', selected: false, disabled: true, onTap: () {}),
+                    _LanguageRow(
+                      label: 'ગુજરાતી',
+                      selected: false,
+                      disabled: true,
+                      onTap: () {},
+                    ),
                   ],
                 ),
               ),
               PrimaryButton(
                 label: 'Continue',
-                onPressed: _selected == null ? null : () => widget.onContinue(_selected!),
+                onPressed: _selected == null
+                    ? null
+                    : () => widget.onContinue(_selected!),
               ),
             ],
           ),
@@ -108,14 +123,19 @@ class _LanguageRow extends StatelessWidget {
                 const Icon(Icons.check_rounded, color: Colors.white)
               else if (disabled)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.violet200,
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: Text(
                     'Soon',
-                    style: AppTextStyles.fieldLabel.copyWith(color: AppColors.violet600),
+                    style: AppTextStyles.fieldLabel.copyWith(
+                      color: AppColors.violet600,
+                    ),
                   ),
                 ),
             ],

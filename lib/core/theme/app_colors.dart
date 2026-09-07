@@ -25,10 +25,6 @@ class AppColors {
   static const Color error = Color(0xFFB3261E);
 
   static const List<BoxShadow> softShadow = [
-    BoxShadow(
-      color: Color(0x241E0A46),
-      blurRadius: 32,
-      offset: Offset(0, 12),
-    ),
+    BoxShadow(color: Color(0x241E0A46), blurRadius: 32, offset: Offset(0, 12)),
   ];
 }

@@ -62,7 +62,11 @@ class _CropScreenState extends State<CropScreen> {
                     alignment: Alignment.center,
                     child: RotatedBox(
                       quarterTurns: _quarterTurns,
-                      child: const Icon(Icons.image_rounded, color: AppColors.violet600, size: 48),
+                      child: const Icon(
+                        Icons.image_rounded,
+                        color: AppColors.violet600,
+                        size: 48,
+                      ),
                     ),
                   ),
                 ),
@@ -81,8 +85,12 @@ class _CropScreenState extends State<CropScreen> {
                       onSelected: (_) => setState(() => _aspect = a),
                       backgroundColor: AppColors.violet800,
                       selectedColor: AppColors.violet600,
-                      labelStyle: AppTextStyles.fieldLabel.copyWith(color: Colors.white),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+                      labelStyle: AppTextStyles.fieldLabel.copyWith(
+                        color: Colors.white,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(999),
+                      ),
                       side: BorderSide.none,
                     ),
                 ],
@@ -93,8 +101,12 @@ class _CropScreenState extends State<CropScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextButton(
-                  onPressed: () => setState(() => _quarterTurns = (_quarterTurns + 1) % 4),
-                  child: Text('Rotate', style: AppTextStyles.body.copyWith(color: Colors.white70)),
+                  onPressed: () =>
+                      setState(() => _quarterTurns = (_quarterTurns + 1) % 4),
+                  child: Text(
+                    'Rotate',
+                    style: AppTextStyles.body.copyWith(color: Colors.white70),
+                  ),
                 ),
                 const SizedBox(width: 12),
                 TextButton(
@@ -102,7 +114,10 @@ class _CropScreenState extends State<CropScreen> {
                     _quarterTurns = 0;
                     _aspect = _CropAspect.square;
                   }),
-                  child: Text('Reset', style: AppTextStyles.body.copyWith(color: Colors.white70)),
+                  child: Text(
+                    'Reset',
+                    style: AppTextStyles.body.copyWith(color: Colors.white70),
+                  ),
                 ),
               ],
             ),
@@ -113,7 +128,10 @@ class _CropScreenState extends State<CropScreen> {
                   Expanded(
                     child: TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: Text('Cancel', style: AppTextStyles.body.copyWith(color: Colors.white)),
+                      child: Text(
+                        'Cancel',
+                        style: AppTextStyles.body.copyWith(color: Colors.white),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -127,7 +145,9 @@ class _CropScreenState extends State<CropScreen> {
                           backgroundColor: AppColors.violet600,
                           foregroundColor: Colors.white,
                           elevation: 0,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
                         ),
                         child: Text('Done', style: AppTextStyles.buttonLabel),
                       ),

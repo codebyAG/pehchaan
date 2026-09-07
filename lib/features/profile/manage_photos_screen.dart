@@ -20,7 +20,9 @@ class _ManagePhotosScreenState extends State<ManagePhotosScreen> {
   }
 
   void _snack(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -47,20 +49,35 @@ class _ManagePhotosScreenState extends State<ManagePhotosScreen> {
                               Container(
                                 width: 104,
                                 height: 104,
-                                decoration: BoxDecoration(color: AppColors.violet200, borderRadius: BorderRadius.circular(16)),
-                                child: const Icon(Icons.storefront_rounded, color: AppColors.violet600, size: 32),
+                                decoration: BoxDecoration(
+                                  color: AppColors.violet200,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: const Icon(
+                                  Icons.storefront_rounded,
+                                  color: AppColors.violet600,
+                                  size: 32,
+                                ),
                               ),
                               Positioned(
                                 top: 6,
                                 right: 6,
                                 child: GestureDetector(
-                                  onTap: () => setState(() => _photos.remove(p)),
+                                  onTap: () =>
+                                      setState(() => _photos.remove(p)),
                                   child: Container(
                                     width: 22,
                                     height: 22,
                                     alignment: Alignment.center,
-                                    decoration: const BoxDecoration(color: AppColors.violet900, shape: BoxShape.circle),
-                                    child: const Icon(Icons.close_rounded, color: Colors.white, size: 14),
+                                    decoration: const BoxDecoration(
+                                      color: AppColors.violet900,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.close_rounded,
+                                      color: Colors.white,
+                                      size: 14,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -74,8 +91,15 @@ class _ManagePhotosScreenState extends State<ManagePhotosScreen> {
                               width: 104,
                               height: 104,
                               alignment: Alignment.center,
-                              decoration: BoxDecoration(color: AppColors.violet100, borderRadius: BorderRadius.circular(16)),
-                              child: const Icon(Icons.add_rounded, color: AppColors.violet600, size: 26),
+                              decoration: BoxDecoration(
+                                color: AppColors.violet100,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: const Icon(
+                                Icons.add_rounded,
+                                color: AppColors.violet600,
+                                size: 26,
+                              ),
                             ),
                           ),
                       ],
@@ -89,17 +113,36 @@ class _ManagePhotosScreenState extends State<ManagePhotosScreen> {
                           width: 56,
                           height: 56,
                           alignment: Alignment.center,
-                          decoration: BoxDecoration(color: AppColors.violet200, borderRadius: BorderRadius.circular(14)),
-                          child: const Icon(Icons.image_rounded, color: AppColors.violet600),
+                          decoration: BoxDecoration(
+                            color: AppColors.violet200,
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: const Icon(
+                            Icons.image_rounded,
+                            color: AppColors.violet600,
+                          ),
                         ),
                         const SizedBox(width: 16),
                         TextButton(
-                          onPressed: () => _snack(context, 'Logo replace ho gaya'),
-                          child: Text('Replace', style: AppTextStyles.body.copyWith(color: AppColors.violet600, fontWeight: FontWeight.w600)),
+                          onPressed: () =>
+                              _snack(context, 'Logo replace ho gaya'),
+                          child: Text(
+                            'Replace',
+                            style: AppTextStyles.body.copyWith(
+                              color: AppColors.violet600,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                         TextButton(
-                          onPressed: () => _snack(context, 'Logo remove ho gaya'),
-                          child: Text('Remove', style: AppTextStyles.body.copyWith(color: const Color(0xFFD94A2B))),
+                          onPressed: () =>
+                              _snack(context, 'Logo remove ho gaya'),
+                          child: Text(
+                            'Remove',
+                            style: AppTextStyles.body.copyWith(
+                              color: const Color(0xFFD94A2B),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -111,14 +154,36 @@ class _ManagePhotosScreenState extends State<ManagePhotosScreen> {
                       runSpacing: 10,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        for (final c in [AppColors.violet600, AppColors.yellow500, AppColors.violet900, Colors.teal, Colors.pink])
-                          Container(width: 32, height: 32, decoration: BoxDecoration(color: c, shape: BoxShape.circle)),
+                        for (final c in [
+                          AppColors.violet600,
+                          AppColors.yellow500,
+                          AppColors.violet900,
+                          Colors.teal,
+                          Colors.pink,
+                        ])
+                          Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              color: c,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(color: AppColors.violet100, borderRadius: BorderRadius.circular(999)),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.violet100,
+                            borderRadius: BorderRadius.circular(999),
+                          ),
                           child: Text(
                             'Use Pehchaan colours',
-                            style: AppTextStyles.fieldLabel.copyWith(color: AppColors.violet600, fontWeight: FontWeight.w600),
+                            style: AppTextStyles.fieldLabel.copyWith(
+                              color: AppColors.violet600,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ],
@@ -127,7 +192,10 @@ class _ManagePhotosScreenState extends State<ManagePhotosScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              PrimaryButton(label: 'Save', onPressed: () => Navigator.of(context).pop()),
+              PrimaryButton(
+                label: 'Save',
+                onPressed: () => Navigator.of(context).pop(),
+              ),
             ],
           ),
         ),

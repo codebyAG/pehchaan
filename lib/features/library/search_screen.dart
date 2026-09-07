@@ -29,7 +29,11 @@ class _SearchScreenState extends State<SearchScreen> {
     final all = AppStateScope.of(context).savedCreatives;
     final results = _query.isEmpty
         ? <Creative>[]
-        : all.where((c) => c.title.toLowerCase().contains(_query.toLowerCase())).toList();
+        : all
+              .where(
+                (c) => c.title.toLowerCase().contains(_query.toLowerCase()),
+              )
+              .toList();
 
     return Scaffold(
       body: SafeArea(
@@ -42,7 +46,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(Icons.arrow_back_rounded, color: AppColors.violet900),
+                    icon: const Icon(
+                      Icons.arrow_back_rounded,
+                      color: AppColors.violet900,
+                    ),
                   ),
                   Expanded(
                     child: TextField(
@@ -52,15 +59,29 @@ class _SearchScreenState extends State<SearchScreen> {
                       style: AppTextStyles.body,
                       decoration: InputDecoration(
                         hintText: 'Offer, festival, product…',
-                        hintStyle: AppTextStyles.body.copyWith(color: AppColors.mutedText),
+                        hintStyle: AppTextStyles.body.copyWith(
+                          color: AppColors.mutedText,
+                        ),
                         filled: true,
                         fillColor: AppColors.violet100,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
-                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 14,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide.none,
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
-                          borderSide: const BorderSide(color: AppColors.violet600, width: 2),
+                          borderSide: const BorderSide(
+                            color: AppColors.violet600,
+                            width: 2,
+                          ),
                         ),
                       ),
                     ),
@@ -85,8 +106,17 @@ class _SearchScreenState extends State<SearchScreen> {
                           height: 40,
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           alignment: Alignment.center,
-                          decoration: BoxDecoration(color: AppColors.violet100, borderRadius: BorderRadius.circular(999)),
-                          child: Text(s, style: AppTextStyles.fieldLabel.copyWith(color: AppColors.violet900, fontWeight: FontWeight.w600)),
+                          decoration: BoxDecoration(
+                            color: AppColors.violet100,
+                            borderRadius: BorderRadius.circular(999),
+                          ),
+                          child: Text(
+                            s,
+                            style: AppTextStyles.fieldLabel.copyWith(
+                              color: AppColors.violet900,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
                   ],
@@ -103,7 +133,12 @@ class _SearchScreenState extends State<SearchScreen> {
                             _controller.clear();
                             setState(() => _query = '');
                           },
-                          child: Text('Clear search', style: AppTextStyles.body.copyWith(color: AppColors.violet600)),
+                          child: Text(
+                            'Clear search',
+                            style: AppTextStyles.body.copyWith(
+                              color: AppColors.violet600,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -113,28 +148,45 @@ class _SearchScreenState extends State<SearchScreen> {
                 Expanded(
                   child: GridView.builder(
                     itemCount: results.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
-                      childAspectRatio: 0.85,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 12,
+                          childAspectRatio: 0.85,
+                        ),
                     itemBuilder: (context, i) {
                       final c = results[i];
                       return InkWell(
                         onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => CreativeDetailScreen(creative: c)),
+                          MaterialPageRoute(
+                            builder: (_) => CreativeDetailScreen(creative: c),
+                          ),
                         ),
                         borderRadius: BorderRadius.circular(16),
                         child: Container(
                           padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(color: AppColors.violet600, borderRadius: BorderRadius.circular(16)),
+                          decoration: BoxDecoration(
+                            color: AppColors.violet600,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(c.category.label, style: AppTextStyles.eyebrow.copyWith(color: Colors.white)),
+                              Text(
+                                c.category.label,
+                                style: AppTextStyles.eyebrow.copyWith(
+                                  color: Colors.white,
+                                ),
+                              ),
                               const Spacer(),
-                              Text(c.title, style: AppTextStyles.body.copyWith(color: Colors.white, fontWeight: FontWeight.w600)),
+                              Text(
+                                c.title,
+                                style: AppTextStyles.body.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ],
                           ),
                         ),

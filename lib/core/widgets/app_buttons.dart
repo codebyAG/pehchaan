@@ -23,15 +23,20 @@ class PrimaryButton extends StatelessWidget {
       height: 56,
       child: ElevatedButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.violet600,
-          disabledBackgroundColor: AppColors.violet600.withValues(alpha: 0.4),
-          foregroundColor: Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        ).copyWith(
-          overlayColor: WidgetStateProperty.all(AppColors.violetPressed),
-        ),
+        style:
+            ElevatedButton.styleFrom(
+              backgroundColor: AppColors.violet600,
+              disabledBackgroundColor: AppColors.violet600.withValues(
+                alpha: 0.4,
+              ),
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+            ).copyWith(
+              overlayColor: WidgetStateProperty.all(AppColors.violetPressed),
+            ),
         child: _ButtonContent(label: label, icon: icon, color: Colors.white),
       ),
     );
@@ -62,7 +67,9 @@ class AccentButton extends StatelessWidget {
           backgroundColor: AppColors.yellow500,
           foregroundColor: AppColors.violet900,
           elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
         child: _ButtonContent(
           label: label,
@@ -99,7 +106,9 @@ class DarkButton extends StatelessWidget {
           backgroundColor: AppColors.violet900,
           foregroundColor: Colors.white,
           elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
         child: _ButtonContent(label: label, icon: icon, color: Colors.white),
       ),
@@ -131,7 +140,9 @@ class SecondaryButton extends StatelessWidget {
           foregroundColor: AppColors.violet600,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
         child: _ButtonContent(
           label: label,

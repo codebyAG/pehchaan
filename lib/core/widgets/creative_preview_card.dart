@@ -45,7 +45,9 @@ class CreativePreviewCard extends StatelessWidget {
               ),
               child: Text(
                 tag,
-                style: AppTextStyles.eyebrow.copyWith(color: AppColors.violet900),
+                style: AppTextStyles.eyebrow.copyWith(
+                  color: AppColors.violet900,
+                ),
               ),
             ),
             const Spacer(),
@@ -71,7 +73,9 @@ class CreativePreviewCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               phone,
-              style: AppTextStyles.fieldLabel.copyWith(color: AppColors.textOnViolet),
+              style: AppTextStyles.fieldLabel.copyWith(
+                color: AppColors.textOnViolet,
+              ),
             ),
           ],
         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'app_colors.dart';
 import 'app_text_styles.dart';
@@ -20,7 +19,8 @@ class AppTheme {
 
     return base.copyWith(
       scaffoldBackgroundColor: AppColors.violet050,
-      textTheme: GoogleFonts.instrumentSansTextTheme(base.textTheme).apply(
+      textTheme: base.textTheme.apply(
+        fontFamily: 'InstrumentSans',
         bodyColor: AppColors.violet900,
         displayColor: AppColors.violet900,
       ),
@@ -32,7 +32,8 @@ class AppTheme {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: false,
-        titleTextStyle: GoogleFonts.nunito(
+        titleTextStyle: TextStyle(
+          fontFamily: 'Nunito',
           fontSize: 22,
           fontWeight: FontWeight.w800,
           color: AppColors.violet600,

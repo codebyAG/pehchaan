@@ -8,12 +8,36 @@ class TypePickerSheet extends StatelessWidget {
   const TypePickerSheet({super.key});
 
   static const _rows = [
-    (category: CreativeCategory.offer, icon: Icons.local_offer_rounded, example: '₹999 stitching offer'),
-    (category: CreativeCategory.festival, icon: Icons.celebration_rounded, example: 'Diwali greeting + offer'),
-    (category: CreativeCategory.product, icon: Icons.shopping_bag_rounded, example: 'New saree collection'),
-    (category: CreativeCategory.service, icon: Icons.content_cut_rounded, example: 'Hair spa starting ₹499'),
-    (category: CreativeCategory.newArrival, icon: Icons.fiber_new_rounded, example: 'Festive collection 2026'),
-    (category: CreativeCategory.announcement, icon: Icons.campaign_rounded, example: 'Shop timing update'),
+    (
+      category: CreativeCategory.offer,
+      icon: Icons.local_offer_rounded,
+      example: '₹999 stitching offer',
+    ),
+    (
+      category: CreativeCategory.festival,
+      icon: Icons.celebration_rounded,
+      example: 'Diwali greeting + offer',
+    ),
+    (
+      category: CreativeCategory.product,
+      icon: Icons.shopping_bag_rounded,
+      example: 'New saree collection',
+    ),
+    (
+      category: CreativeCategory.service,
+      icon: Icons.content_cut_rounded,
+      example: 'Hair spa starting ₹499',
+    ),
+    (
+      category: CreativeCategory.newArrival,
+      icon: Icons.fiber_new_rounded,
+      example: 'Festive collection 2026',
+    ),
+    (
+      category: CreativeCategory.announcement,
+      icon: Icons.campaign_rounded,
+      example: 'Shop timing update',
+    ),
   ];
 
   static Future<CreativeCategory?> show(BuildContext context) {
@@ -31,7 +55,9 @@ class TypePickerSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.85),
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.85,
+        ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
           child: Column(
@@ -69,22 +95,35 @@ class TypePickerSheet extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                Icon(row.icon, color: AppColors.violet600, size: 22),
+                                Icon(
+                                  row.icon,
+                                  color: AppColors.violet600,
+                                  size: 22,
+                                ),
                                 const SizedBox(width: 14),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
                                         row.category.label,
-                                        style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w600),
+                                        style: AppTextStyles.body.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                      Text(row.example, style: AppTextStyles.fieldLabel),
+                                      Text(
+                                        row.example,
+                                        style: AppTextStyles.fieldLabel,
+                                      ),
                                     ],
                                   ),
                                 ),
-                                const Icon(Icons.chevron_right_rounded, color: AppColors.mutedText),
+                                const Icon(
+                                  Icons.chevron_right_rounded,
+                                  color: AppColors.mutedText,
+                                ),
                               ],
                             ),
                           ),

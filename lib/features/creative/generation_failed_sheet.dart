@@ -6,17 +6,30 @@ import 'package:pehchaan/core/widgets/app_buttons.dart';
 
 /// Never shows error codes or model names — plain-language reason only.
 class GenerationFailedSheet extends StatelessWidget {
-  const GenerationFailedSheet({super.key, required this.onTryAgain, required this.onChangeDetails});
+  const GenerationFailedSheet({
+    super.key,
+    required this.onTryAgain,
+    required this.onChangeDetails,
+  });
 
   final VoidCallback onTryAgain;
   final VoidCallback onChangeDetails;
 
-  static Future<void> show(BuildContext context, {required VoidCallback onTryAgain, required VoidCallback onChangeDetails}) {
+  static Future<void> show(
+    BuildContext context, {
+    required VoidCallback onTryAgain,
+    required VoidCallback onChangeDetails,
+  }) {
     return showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.surface,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
-      builder: (_) => GenerationFailedSheet(onTryAgain: onTryAgain, onChangeDetails: onChangeDetails),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (_) => GenerationFailedSheet(
+        onTryAgain: onTryAgain,
+        onChangeDetails: onChangeDetails,
+      ),
     );
   }
 
@@ -33,7 +46,10 @@ class GenerationFailedSheet extends StatelessWidget {
               child: Container(
                 width: 36,
                 height: 4,
-                decoration: BoxDecoration(color: AppColors.divider, borderRadius: BorderRadius.circular(999)),
+                decoration: BoxDecoration(
+                  color: AppColors.divider,
+                  borderRadius: BorderRadius.circular(999),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -44,7 +60,10 @@ class GenerationFailedSheet extends StatelessWidget {
             PrimaryButton(label: 'Try again', onPressed: onTryAgain),
             TextButton(
               onPressed: onChangeDetails,
-              child: Text('Change details', style: AppTextStyles.body.copyWith(color: AppColors.mutedText)),
+              child: Text(
+                'Change details',
+                style: AppTextStyles.body.copyWith(color: AppColors.mutedText),
+              ),
             ),
           ],
         ),

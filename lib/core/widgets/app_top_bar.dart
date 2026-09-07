@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:pehchaan/core/theme/app_colors.dart';
 
@@ -23,7 +22,8 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               Text(
                 'Pehchaan',
-                style: GoogleFonts.nunito(
+                style: TextStyle(
+                  fontFamily: 'Nunito',
                   fontSize: 22,
                   fontWeight: FontWeight.w800,
                   color: AppColors.violet600,
@@ -38,7 +38,11 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      const Icon(Icons.notifications_none_rounded, color: AppColors.violet900, size: 26),
+                      const Icon(
+                        Icons.notifications_none_rounded,
+                        color: AppColors.violet900,
+                        size: 26,
+                      ),
                       if (hasUnread)
                         Positioned(
                           top: 8,

@@ -1,4 +1,11 @@
-enum CreativeCategory { offer, festival, product, service, newArrival, announcement }
+enum CreativeCategory {
+  offer,
+  festival,
+  product,
+  service,
+  newArrival,
+  announcement,
+}
 
 extension CreativeCategoryLabel on CreativeCategory {
   String get label {

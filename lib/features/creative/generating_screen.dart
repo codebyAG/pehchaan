@@ -29,7 +29,11 @@ class GeneratingScreen extends StatefulWidget {
 }
 
 class _GeneratingScreenState extends State<GeneratingScreen> {
-  static const _statuses = ['Design choose kar rahe hain', 'Text likh rahe hain', 'Final touch'];
+  static const _statuses = [
+    'Design choose kar rahe hain',
+    'Text likh rahe hain',
+    'Final touch',
+  ];
   int _statusIndex = 0;
   Timer? _statusTimer;
   Timer? _doneTimer;
@@ -81,21 +85,32 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
               Container(
                 width: 72,
                 height: 72,
-                decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
                 alignment: Alignment.center,
-                child: const Icon(Icons.auto_awesome_rounded, color: AppColors.violet600, size: 32),
+                child: const Icon(
+                  Icons.auto_awesome_rounded,
+                  color: AppColors.violet600,
+                  size: 32,
+                ),
               ),
               const SizedBox(height: 28),
               Text(
                 'Aapka creative ban raha hai…',
                 textAlign: TextAlign.center,
-                style: AppTextStyles.sectionHeading.copyWith(color: Colors.white),
+                style: AppTextStyles.sectionHeading.copyWith(
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(height: 12),
               Text(
                 _statuses[_statusIndex],
                 textAlign: TextAlign.center,
-                style: AppTextStyles.fieldLabel.copyWith(color: AppColors.textOnViolet),
+                style: AppTextStyles.fieldLabel.copyWith(
+                  color: AppColors.textOnViolet,
+                ),
               ),
               const SizedBox(height: 28),
               SizedBox(
@@ -112,7 +127,10 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
               const SizedBox(height: 24),
               TextButton(
                 onPressed: _cancel,
-                child: Text('Cancel', style: AppTextStyles.body.copyWith(color: Colors.white60)),
+                child: Text(
+                  'Cancel',
+                  style: AppTextStyles.body.copyWith(color: Colors.white60),
+                ),
               ),
             ],
           ),

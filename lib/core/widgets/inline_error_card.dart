@@ -36,7 +36,9 @@ class InlineErrorCard extends StatelessWidget {
             ),
             child: Text(
               'Try again',
-              style: AppTextStyles.buttonLabel.copyWith(color: AppColors.violet600),
+              style: AppTextStyles.buttonLabel.copyWith(
+                color: AppColors.violet600,
+              ),
             ),
           ),
         ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'app_colors.dart';
 
@@ -8,48 +7,55 @@ import 'app_colors.dart';
 class AppTextStyles {
   AppTextStyles._();
 
-  static TextStyle screenTitle = GoogleFonts.nunito(
+  static TextStyle screenTitle = TextStyle(
+    fontFamily: 'Nunito',
     fontSize: 25,
     fontWeight: FontWeight.w800,
     height: 1.15,
     color: AppColors.violet900,
   );
 
-  static TextStyle sectionHeading = GoogleFonts.nunito(
+  static TextStyle sectionHeading = TextStyle(
+    fontFamily: 'Nunito',
     fontSize: 20,
     fontWeight: FontWeight.w700,
     height: 1.25,
     color: AppColors.violet900,
   );
 
-  static TextStyle bigNumber = GoogleFonts.nunito(
+  static TextStyle bigNumber = TextStyle(
+    fontFamily: 'Nunito',
     fontSize: 52,
     fontWeight: FontWeight.w800,
     height: 1.1,
     color: Colors.white,
   );
 
-  static TextStyle body = GoogleFonts.instrumentSans(
+  static TextStyle body = TextStyle(
+    fontFamily: 'InstrumentSans',
     fontSize: 17,
     fontWeight: FontWeight.w400,
     height: 1.4,
     color: AppColors.violet900,
   );
 
-  static TextStyle buttonLabel = GoogleFonts.instrumentSans(
+  static TextStyle buttonLabel = TextStyle(
+    fontFamily: 'InstrumentSans',
     fontSize: 18,
     fontWeight: FontWeight.w600,
     height: 1.3,
   );
 
-  static TextStyle fieldLabel = GoogleFonts.instrumentSans(
+  static TextStyle fieldLabel = TextStyle(
+    fontFamily: 'InstrumentSans',
     fontSize: 14,
     fontWeight: FontWeight.w400,
     height: 1.4,
     color: AppColors.mutedText,
   );
 
-  static TextStyle eyebrow = GoogleFonts.instrumentSans(
+  static TextStyle eyebrow = TextStyle(
+    fontFamily: 'InstrumentSans',
     fontSize: 13,
     fontWeight: FontWeight.w600,
     letterSpacing: 2.6,

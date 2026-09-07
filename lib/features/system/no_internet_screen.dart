@@ -24,9 +24,16 @@ class NoInternetScreen extends StatelessWidget {
                 Container(
                   width: 120,
                   height: 120,
-                  decoration: BoxDecoration(color: AppColors.violet200, borderRadius: BorderRadius.circular(24)),
+                  decoration: BoxDecoration(
+                    color: AppColors.violet200,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
                   alignment: Alignment.center,
-                  child: const Icon(Icons.wifi_off_rounded, color: AppColors.violet600, size: 44),
+                  child: const Icon(
+                    Icons.wifi_off_rounded,
+                    color: AppColors.violet600,
+                    size: 44,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Text('Internet nahi hai', style: AppTextStyles.sectionHeading),
@@ -34,7 +41,9 @@ class NoInternetScreen extends StatelessWidget {
                 Text(
                   'Creative banane ke liye connection chahiye.',
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.body.copyWith(color: AppColors.mutedText),
+                  style: AppTextStyles.body.copyWith(
+                    color: AppColors.mutedText,
+                  ),
                 ),
                 const SizedBox(height: 24),
                 PrimaryButton(label: 'Try again', onPressed: onRetry),

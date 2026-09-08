@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:pehchaan/core/models/business.dart';
 import 'package:pehchaan/core/models/creative.dart';
 import 'package:pehchaan/core/models/user.dart';
+import 'local_storage.dart';
 
 class AppState extends ChangeNotifier {
   AppUser? user;
@@ -13,7 +14,8 @@ class AppState extends ChangeNotifier {
 
   /// Pre-seeded with a sample business and creatives so the app opens
   /// straight into a populated Home — no login or setup gate for this
-  /// mock, Play‑Store‑listing build.
+  /// mock, Play‑Store‑listing build. [hydrate] then overlays anything the
+  /// user has actually saved on this device, if any.
   factory AppState.withMockData() {
     final state = AppState();
     const business = Business(
@@ -27,6 +29,24 @@ class AppState extends ChangeNotifier {
     state.business = business;
     state._seedMockCreatives(business);
     return state;
+  }
+
+  /// Loads whatever the user previously filled in/saved on this device
+  /// (business details, creatives) and replaces the seeded mock data with
+  /// it. Safe to call once at startup; no-ops if nothing was saved yet.
+  Future<void> hydrate() async {
+    final savedBusiness = await LocalStorage.loadBusiness();
+    final savedList = await LocalStorage.loadCreatives();
+
+    if (savedBusiness == null && savedList == null) return;
+
+    if (savedBusiness != null) business = savedBusiness;
+    if (savedList != null) {
+      savedCreatives
+        ..clear()
+        ..addAll(savedList);
+    }
+    notifyListeners();
   }
 
   void setLanguage(AppLanguage language) {
@@ -44,21 +64,25 @@ class AppState extends ChangeNotifier {
     business = value;
     if (isFirstSetup) _seedMockCreatives(value);
     notifyListeners();
+    LocalStorage.saveBusiness(value);
   }
 
   void addCreative(Creative creative) {
     savedCreatives.insert(0, creative);
     notifyListeners();
+    LocalStorage.saveCreatives(savedCreatives);
   }
 
   void removeCreative(Creative creative) {
     savedCreatives.remove(creative);
     notifyListeners();
+    LocalStorage.saveCreatives(savedCreatives);
   }
 
   void removeCreatives(Iterable<Creative> creatives) {
     savedCreatives.removeWhere(creatives.toSet().contains);
     notifyListeners();
+    LocalStorage.saveCreatives(savedCreatives);
   }
 
   void _seedMockCreatives(Business business) {

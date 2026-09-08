@@ -1,0 +1,10 @@
+name: pehchaan_server
+description: Minimal local backend that holds the OpenAI API key and proxies image-generation requests for the Pehchaan app. Not for production deployment as-is — see README.md.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.10.0
+
+# Deliberately zero external dependencies — dart:io covers everything
+# this MVP needs (HTTP server, HTTPS client, JSON).

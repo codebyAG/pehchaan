@@ -21,6 +21,14 @@ class _PehchaanAppState extends State<PehchaanApp> {
   _Stage _stage = _Stage.splash;
 
   @override
+  void initState() {
+    super.initState();
+    // Load whatever the user already saved on this device (business
+    // details, creatives) over the seeded mock data, while splash shows.
+    _appState.hydrate();
+  }
+
+  @override
   void dispose() {
     _appState.dispose();
     super.dispose();

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'package:pehchaan/core/models/creative.dart';
@@ -14,6 +16,7 @@ class FormatDownloadScreen extends StatefulWidget {
     required this.businessName,
     required this.phone,
     this.format = CreativeFormat.post,
+    this.imageBytes,
   });
 
   final CreativeCategory category;
@@ -22,6 +25,7 @@ class FormatDownloadScreen extends StatefulWidget {
   final String businessName;
   final String phone;
   final CreativeFormat format;
+  final Uint8List? imageBytes;
 
   @override
   State<FormatDownloadScreen> createState() => _FormatDownloadScreenState();

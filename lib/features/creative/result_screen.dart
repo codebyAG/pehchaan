@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'package:pehchaan/core/models/creative.dart';
@@ -18,12 +20,23 @@ class ResultScreen extends StatefulWidget {
     required this.title,
     required this.priceText,
     this.format = CreativeFormat.post,
+    this.imageBytes,
+    this.aiRequest,
   });
 
   final CreativeCategory category;
   final String title;
   final String priceText;
   final CreativeFormat format;
+
+  /// The real AI-generated image, when this result came from a real
+  /// request. Null falls back to the synthetic text/price preview card
+  /// (used by older mock call sites that have no image).
+  final Uint8List? imageBytes;
+
+  /// The original descriptive request sent to the AI, kept so
+  /// "Regenerate" can ask for a real new image again.
+  final String? aiRequest;
 
   @override
   State<ResultScreen> createState() => _ResultScreenState();
@@ -53,6 +66,7 @@ class _ResultScreenState extends State<ResultScreen> {
             ? business!.phone
             : '+91 98765 43210',
         format: widget.format,
+        imageBytes: widget.imageBytes,
       ),
     );
     _saved = true;
@@ -80,14 +94,28 @@ class _ResultScreenState extends State<ResultScreen> {
             children: [
               Expanded(
                 child: Center(
-                  child: CreativePreviewCard(
-                    tag: widget.category.label,
-                    title: _title,
-                    priceText: _priceText,
-                    businessName: businessName,
-                    phone: phone,
-                    aspectRatio: widget.format.aspectRatio,
-                  ),
+                  child: widget.imageBytes != null
+                      ? AspectRatio(
+                          aspectRatio: widget.format.aspectRatio,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(18),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(18),
+                                boxShadow: AppColors.softShadow,
+                              ),
+                              child: Image.memory(widget.imageBytes!, fit: BoxFit.cover),
+                            ),
+                          ),
+                        )
+                      : CreativePreviewCard(
+                          tag: widget.category.label,
+                          title: _title,
+                          priceText: _priceText,
+                          businessName: businessName,
+                          phone: phone,
+                          aspectRatio: widget.format.aspectRatio,
+                        ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -157,6 +185,7 @@ class _ResultScreenState extends State<ResultScreen> {
                               title: _title,
                               priceText: _priceText,
                               format: widget.format,
+                              aiRequest: widget.aiRequest,
                             ),
                           ),
                         );
@@ -178,6 +207,7 @@ class _ResultScreenState extends State<ResultScreen> {
                               businessName: businessName,
                               phone: phone,
                               format: widget.format,
+                              imageBytes: widget.imageBytes,
                             ),
                           ),
                         );

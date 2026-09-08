@@ -38,4 +38,24 @@ class Business {
       photos: photos ?? this.photos,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'category': category,
+    'phone': phone,
+    'city': city,
+    'area': area,
+    'address': address,
+    'photos': photos,
+  };
+
+  factory Business.fromJson(Map<String, dynamic> json) => Business(
+    name: json['name'] as String? ?? '',
+    category: json['category'] as String? ?? '',
+    phone: json['phone'] as String? ?? '',
+    city: json['city'] as String? ?? '',
+    area: json['area'] as String? ?? '',
+    address: json['address'] as String? ?? '',
+    photos: (json['photos'] as List?)?.cast<String>() ?? const [],
+  );
 }

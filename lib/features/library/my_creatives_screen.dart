@@ -247,12 +247,13 @@ class _CreativeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasImage = creative.imageBytes != null;
     return InkWell(
       onTap: onTap,
       onLongPress: onLongPress,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: AppColors.violet600,
           borderRadius: BorderRadius.circular(16),
@@ -260,47 +261,76 @@ class _CreativeTile extends StatelessWidget {
               ? Border.all(color: AppColors.yellow500, width: 3)
               : null,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
+          fit: StackFit.expand,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.yellow500,
-                borderRadius: BorderRadius.circular(999),
-              ),
-              child: Text(
-                creative.category.label,
-                style: AppTextStyles.eyebrow.copyWith(
-                  color: AppColors.violet900,
-                  fontSize: 11,
+            if (hasImage)
+              Image.memory(creative.imageBytes!, fit: BoxFit.cover),
+            if (hasImage)
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withValues(alpha: 0.0),
+                      Colors.black.withValues(alpha: 0.55),
+                    ],
+                    stops: const [0.5, 1.0],
+                  ),
                 ),
               ),
-            ),
-            const Spacer(),
-            Text(
-              creative.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.body.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              creative.priceText,
-              style: AppTextStyles.sectionHeading.copyWith(
-                color: Colors.white,
-                fontSize: 20,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              _formatDate(creative.createdAt),
-              style: AppTextStyles.fieldLabel.copyWith(
-                color: AppColors.textOnViolet,
-                fontSize: 12,
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.yellow500,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    child: Text(
+                      creative.category.label,
+                      style: AppTextStyles.eyebrow.copyWith(
+                        color: AppColors.violet900,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  if (!hasImage) ...[
+                    Text(
+                      creative.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.body.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      creative.priceText,
+                      style: AppTextStyles.sectionHeading.copyWith(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                  ],
+                  Text(
+                    _formatDate(creative.createdAt),
+                    style: AppTextStyles.fieldLabel.copyWith(
+                      color: AppColors.textOnViolet,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

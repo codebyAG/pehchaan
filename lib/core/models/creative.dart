@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 enum CreativeCategory {
   offer,
   festival,
@@ -75,6 +78,7 @@ class Creative {
     required this.businessName,
     required this.phone,
     this.format = CreativeFormat.post,
+    this.imageBytes,
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
 
@@ -84,5 +88,42 @@ class Creative {
   final String businessName;
   final String phone;
   final CreativeFormat format;
+
+  /// The real AI-generated image, when this creative came from a real
+  /// request. Null for the mock/demo entries.
+  final Uint8List? imageBytes;
   final DateTime createdAt;
+
+  Map<String, dynamic> toJson() => {
+    'category': category.name,
+    'title': title,
+    'priceText': priceText,
+    'businessName': businessName,
+    'phone': phone,
+    'format': format.name,
+    'imageBase64': imageBytes != null ? base64Encode(imageBytes!) : null,
+    'createdAt': createdAt.toIso8601String(),
+  };
+
+  factory Creative.fromJson(Map<String, dynamic> json) {
+    final base64Image = json['imageBase64'] as String?;
+    return Creative(
+      category: CreativeCategory.values.firstWhere(
+        (c) => c.name == json['category'],
+        orElse: () => CreativeCategory.offer,
+      ),
+      title: json['title'] as String? ?? '',
+      priceText: json['priceText'] as String? ?? '',
+      businessName: json['businessName'] as String? ?? '',
+      phone: json['phone'] as String? ?? '',
+      format: CreativeFormat.values.firstWhere(
+        (f) => f.name == json['format'],
+        orElse: () => CreativeFormat.post,
+      ),
+      imageBytes: base64Image != null && base64Image.isNotEmpty
+          ? base64Decode(base64Image)
+          : null,
+      createdAt: DateTime.tryParse(json['createdAt'] as String? ?? '') ?? DateTime.now(),
+    );
+  }
 }

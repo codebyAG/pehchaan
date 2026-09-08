@@ -9,6 +9,7 @@ import 'package:pehchaan/core/widgets/business_header_row.dart';
 import 'package:pehchaan/core/widgets/app_buttons.dart';
 import 'package:pehchaan/core/widgets/category_tile.dart';
 import 'package:pehchaan/core/widgets/home_banner_carousel.dart';
+import 'package:pehchaan/features/ai_image/ai_image_screen.dart';
 import 'package:pehchaan/features/creative/creative_input_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -65,6 +66,17 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: const AppTopBar(),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const AiImageScreen()),
+        ),
+        backgroundColor: AppColors.violet600,
+        icon: const Icon(Icons.auto_awesome_rounded, color: Colors.white),
+        label: Text(
+          'AI Image',
+          style: AppTextStyles.buttonLabel.copyWith(color: Colors.white, fontSize: 15),
+        ),
+      ),
       body: SafeArea(
         top: false,
         child: ListView(

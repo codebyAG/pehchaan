@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:pehchaan/core/models/creative.dart';
+import 'package:pehchaan/core/state/app_state.dart';
 import 'package:pehchaan/core/theme/app_colors.dart';
 import 'package:pehchaan/core/theme/app_text_styles.dart';
 import 'package:pehchaan/core/widgets/app_buttons.dart';
@@ -88,9 +89,56 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
           title: title,
           priceText: priceText,
           format: _format,
+          aiRequest: _buildAiRequest(),
         ),
       ),
     );
+  }
+
+  /// Folds in every field the user filled on this form — plus the saved
+  /// business name, category and location — so GPT gets the same detail
+  /// a human designer would be briefed with, not just the headline text.
+  String _buildAiRequest() {
+    final business = AppStateScope.of(context, listen: false).business;
+    final primary = _primaryController.text.trim();
+    final price = _priceController.text.trim();
+    final secondary = _secondaryController.text.trim();
+
+    final parts = <String>['Creative type: ${widget.category.label}.'];
+
+    switch (widget.category) {
+      case CreativeCategory.offer:
+        if (primary.isNotEmpty) parts.add('Offer: $primary.');
+        if (price.isNotEmpty) parts.add('Price: ₹$price.');
+        if (secondary.isNotEmpty) parts.add('Occasion: $secondary.');
+      case CreativeCategory.festival:
+        if (secondary.isNotEmpty) parts.add('Festival: $secondary.');
+        if (primary.isNotEmpty) parts.add('Greeting/offer: $primary.');
+        if (price.isNotEmpty) parts.add('Price: ₹$price.');
+      case CreativeCategory.product:
+        if (primary.isNotEmpty) parts.add('Product: $primary.');
+        if (price.isNotEmpty) parts.add('Price: ₹$price.');
+      case CreativeCategory.service:
+        if (primary.isNotEmpty) parts.add('Service: $primary.');
+        if (price.isNotEmpty) parts.add('Starting price: ₹$price.');
+        if (secondary.isNotEmpty) parts.add('Benefit: $secondary.');
+      case CreativeCategory.newArrival:
+        if (primary.isNotEmpty) parts.add('New arrival: $primary.');
+        if (secondary.isNotEmpty) parts.add('$secondary.');
+      case CreativeCategory.announcement:
+        if (primary.isNotEmpty) parts.add('Announcement: $primary.');
+        if (secondary.isNotEmpty) parts.add('When: $secondary.');
+    }
+
+    if (business != null) {
+      final bizBits = <String>[business.name];
+      if (business.category.isNotEmpty) bizBits.add(business.category);
+      if (business.location.isNotEmpty) bizBits.add(business.location);
+      parts.add('For the business: ${bizBits.join(', ')}.');
+    }
+
+    parts.add('Format: ${_format.label}.');
+    return parts.join(' ');
   }
 
   @override

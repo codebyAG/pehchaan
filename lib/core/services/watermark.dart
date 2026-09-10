@@ -83,9 +83,9 @@ Uint8List _stampWatermark(_WatermarkArgs args) {
   return Uint8List.fromList(img.encodePng(base));
 }
 
-/// Fills a rounded rectangle as the union of a cross of two rects (for the
-/// straight edges) plus four corner circles — the `image` package has no
-/// rounded-rect primitive of its own.
+/// Fills a rounded rectangle pixel-by-pixel (the `image` package has no
+/// rounded-rect primitive), cutting each corner to a quarter-circle and
+/// alpha-blending onto whatever is already there via [img.drawPixel].
 void _fillRoundedRect(
   img.Image image, {
   required int x,
@@ -96,20 +96,32 @@ void _fillRoundedRect(
   required img.Color color,
 }) {
   final r = radius.clamp(0, (width < height ? width : height) ~/ 2);
+  final r2 = r * r;
 
-  img.fillRect(image, x1: x + r, y1: y, x2: x + width - r - 1, y2: y + height - 1, color: color);
-  img.fillRect(image, x1: x, y1: y + r, x2: x + r - 1, y2: y + height - r - 1, color: color);
-  img.fillRect(
-    image,
-    x1: x + width - r,
-    y1: y + r,
-    x2: x + width - 1,
-    y2: y + height - r - 1,
-    color: color,
-  );
+  for (var j = 0; j < height; j++) {
+    final py = y + j;
+    if (py < 0 || py >= image.height) continue;
+    for (var i = 0; i < width; i++) {
+      final px = x + i;
+      if (px < 0 || px >= image.width) continue;
 
-  img.fillCircle(image, x: x + r, y: y + r, radius: r, color: color);
-  img.fillCircle(image, x: x + width - r - 1, y: y + r, radius: r, color: color);
-  img.fillCircle(image, x: x + r, y: y + height - r - 1, radius: r, color: color);
-  img.fillCircle(image, x: x + width - r - 1, y: y + height - r - 1, radius: r, color: color);
+      final inTopBand = j < r;
+      final inBottomBand = j >= height - r;
+      final inLeftBand = i < r;
+      final inRightBand = i >= width - r;
+
+      var inside = true;
+      if ((inTopBand || inBottomBand) && (inLeftBand || inRightBand)) {
+        final cx = inLeftBand ? r : width - r - 1;
+        final cy = inTopBand ? r : height - r - 1;
+        final dx = i - cx;
+        final dy = j - cy;
+        inside = (dx * dx + dy * dy) <= r2;
+      }
+
+      if (inside) {
+        img.drawPixel(image, px, py, color, blend: img.BlendMode.alpha);
+      }
+    }
+  }
 }

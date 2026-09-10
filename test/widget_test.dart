@@ -9,6 +9,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const PehchaanApp());
     await tester.pump(const Duration(milliseconds: 1300));
+    await tester.pumpAndSettle();
 
     await tester.scrollUntilVisible(
       find.text('Aaj kya promote karna hai?'),
@@ -23,6 +24,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const PehchaanApp());
     await tester.pump(const Duration(milliseconds: 1300));
+    await tester.pumpAndSettle();
 
     expect(find.text('Raju Tailor'), findsOneWidget);
   });

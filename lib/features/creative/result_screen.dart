@@ -42,8 +42,6 @@ class ResultScreen extends StatefulWidget {
 }
 
 class _ResultScreenState extends State<ResultScreen> {
-  late String _title = widget.title;
-  late String _priceText = widget.priceText;
   bool _saved = false;
 
   @override
@@ -58,8 +56,8 @@ class _ResultScreenState extends State<ResultScreen> {
     AppStateScope.of(context).addCreative(
       Creative(
         category: widget.category,
-        title: _title,
-        priceText: _priceText,
+        title: widget.title,
+        priceText: widget.priceText,
         businessName: business?.name ?? 'Your Business',
         phone: business?.phone.isNotEmpty == true
             ? business!.phone
@@ -95,8 +93,8 @@ class _ResultScreenState extends State<ResultScreen> {
                 child: Center(
                   child: CreativePreviewCard(
                           tag: widget.category.label,
-                          title: _title,
-                          priceText: _priceText,
+                          title: widget.title,
+                          priceText: widget.priceText,
                           businessName: businessName,
                           phone: phone,
                           logoBytes: business?.logoBytes,
@@ -136,8 +134,8 @@ class _ResultScreenState extends State<ResultScreen> {
                           MaterialPageRoute(
                             builder: (_) => GeneratingScreen(
                               category: widget.category,
-                              title: _title,
-                              priceText: _priceText,
+                              title: widget.title,
+                              priceText: widget.priceText,
                               format: widget.format,
                               aiRequest: widget.aiRequest,
                             ),
@@ -156,8 +154,8 @@ class _ResultScreenState extends State<ResultScreen> {
                           MaterialPageRoute(
                             builder: (_) => FormatDownloadScreen(
                               category: widget.category,
-                              title: _title,
-                              priceText: _priceText,
+                              title: widget.title,
+                              priceText: widget.priceText,
                               businessName: businessName,
                               phone: phone,
                               format: widget.format,

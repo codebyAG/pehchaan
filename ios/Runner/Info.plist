@@ -47,5 +47,7 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Pehchaan needs access to your photos so you can upload your business logo and shop photos.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Pehchaan needs permission to save your generated creatives to your photos.</string>
 </dict>
 </plist>

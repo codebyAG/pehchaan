@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:gal/gal.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'package:pehchaan/core/models/creative.dart';
 import 'package:pehchaan/core/theme/app_colors.dart';
@@ -33,26 +35,50 @@ class FormatDownloadScreen extends StatefulWidget {
 
 class _FormatDownloadScreenState extends State<FormatDownloadScreen> {
   late CreativeFormat _selectedFormat = widget.format;
+  bool _busy = false;
 
-  void _saveToPhone() {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Gallery mein save ho gaya')));
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (_) => const SuccessScreen()));
+  void _snack(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void _share(String appName) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('$appName khul raha hai')));
+  Future<void> _saveToPhone() async {
+    final bytes = widget.imageBytes;
+    if (bytes == null) {
+      _snack('Yeh creative save nahi ho sakti (koi real image nahi hai).');
+      return;
+    }
+    setState(() => _busy = true);
+    try {
+      await Gal.putImageBytes(bytes, name: 'pehchaan_${DateTime.now().millisecondsSinceEpoch}');
+      if (!mounted) return;
+      _snack('Gallery mein save ho gaya');
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SuccessScreen()));
+    } on GalException {
+      if (!mounted) return;
+      _snack('Save nahi ho paya. Photos permission check karein.');
+    } catch (_) {
+      if (!mounted) return;
+      _snack('Save nahi ho paya. Dobara try karein.');
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
   }
 
-  void _moreApps() {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Share sheet khul raha hai')));
+  Future<void> _share() async {
+    final bytes = widget.imageBytes;
+    if (bytes == null) {
+      _snack('Yeh creative share nahi ho sakti (koi real image nahi hai).');
+      return;
+    }
+    try {
+      await Share.shareXFiles(
+        [XFile.fromData(bytes, name: 'pehchaan.png', mimeType: 'image/png')],
+        text: widget.title,
+      );
+    } catch (_) {
+      if (!mounted) return;
+      _snack('Share nahi ho paya. Dobara try karein.');
+    }
   }
 
   @override
@@ -88,26 +114,26 @@ class _FormatDownloadScreenState extends State<FormatDownloadScreen> {
             const SizedBox(height: 12),
             _ActionRow(
               icon: Icons.download_rounded,
-              label: 'Save to phone',
-              onTap: _saveToPhone,
+              label: _busy ? 'Saving…' : 'Save to phone',
+              onTap: _busy ? null : _saveToPhone,
             ),
             const SizedBox(height: 12),
             _ActionRow(
               icon: Icons.chat_bubble_rounded,
               label: 'Share on WhatsApp',
-              onTap: () => _share('WhatsApp'),
+              onTap: _share,
             ),
             const SizedBox(height: 12),
             _ActionRow(
               icon: Icons.camera_alt_rounded,
               label: 'Share on Instagram',
-              onTap: () => _share('Instagram'),
+              onTap: _share,
             ),
             const SizedBox(height: 12),
             _ActionRow(
               icon: Icons.more_horiz_rounded,
               label: 'More apps',
-              onTap: _moreApps,
+              onTap: _share,
             ),
             const SizedBox(height: 20),
             Text(
@@ -190,7 +216,7 @@ class _ActionRow extends StatelessWidget {
 
   final IconData icon;
   final String label;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {

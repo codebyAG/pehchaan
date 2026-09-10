@@ -30,6 +30,15 @@ class Business {
 
   String get location => [area, city].where((s) => s.isNotEmpty).join(', ');
 
+  /// Minimum details needed before we'll let the user spend an AI
+  /// generation — without these, GPT has nothing real to work with.
+  bool get isProfileComplete =>
+      name.trim().isNotEmpty &&
+      category.trim().isNotEmpty &&
+      phone.trim().isNotEmpty &&
+      city.trim().isNotEmpty &&
+      area.trim().isNotEmpty;
+
   Business copyWith({
     String? name,
     String? category,

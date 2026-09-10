@@ -58,7 +58,20 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    for (final c in [_nameController, _phoneController, _cityController, _areaController]) {
+      c.addListener(_onFieldChanged);
+    }
+  }
+
+  void _onFieldChanged() => setState(() {});
+
+  @override
   void dispose() {
+    for (final c in [_nameController, _phoneController, _cityController, _areaController]) {
+      c.removeListener(_onFieldChanged);
+    }
     _nameController.dispose();
     _phoneController.dispose();
     _cityController.dispose();
@@ -66,6 +79,14 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
     _addressController.dispose();
     super.dispose();
   }
+
+  bool get _isStepOneValid =>
+      _nameController.text.trim().isNotEmpty &&
+      _category != null &&
+      _phoneController.text.trim().isNotEmpty;
+
+  bool get _isStepTwoValid =>
+      _cityController.text.trim().isNotEmpty && _areaController.text.trim().isNotEmpty;
 
   void _pickCategory() async {
     final selected = await showModalBottomSheet<String>(
@@ -341,24 +362,13 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
     if (_step == 1) {
       return PrimaryButton(
         label: 'Continue',
-        onPressed: () => setState(() => _step = 2),
+        onPressed: _isStepOneValid ? () => setState(() => _step = 2) : null,
       );
     }
     if (_step == 2) {
-      return Column(
-        children: [
-          PrimaryButton(
-            label: 'Continue',
-            onPressed: () => setState(() => _step = 3),
-          ),
-          TextButton(
-            onPressed: () => setState(() => _step = 3),
-            child: Text(
-              'Skip',
-              style: AppTextStyles.body.copyWith(color: AppColors.mutedText),
-            ),
-          ),
-        ],
+      return PrimaryButton(
+        label: 'Continue',
+        onPressed: _isStepTwoValid ? () => setState(() => _step = 3) : null,
       );
     }
     return Column(
@@ -367,7 +377,7 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
         TextButton(
           onPressed: _finish,
           child: Text(
-            'Skip for now',
+            'Skip for now (photos & logo baad mein add karein)',
             style: AppTextStyles.body.copyWith(color: AppColors.mutedText),
           ),
         ),

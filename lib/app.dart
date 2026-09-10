@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'core/navigation/root_shell.dart';
 import 'core/state/app_state.dart';
 import 'core/theme/app_theme.dart';
+import 'features/business_setup/business_setup_screen.dart';
 import 'features/onboarding/splash_screen.dart';
 
-/// Mock build for the Play Store listing: no auth, no setup gate — splash
-/// goes straight into the app with a pre-seeded business and creatives.
-enum _Stage { splash, home }
+/// No login/OTP gate for this build — but a complete business profile
+/// (name, category, phone, location) is required before Home unlocks,
+/// since every AI generation depends on it.
+enum _Stage { splash, businessSetup, home }
 
 class PehchaanApp extends StatefulWidget {
   const PehchaanApp({super.key});
@@ -18,15 +20,8 @@ class PehchaanApp extends StatefulWidget {
 
 class _PehchaanAppState extends State<PehchaanApp> {
   final _appState = AppState.withMockData();
+  late final Future<void> _hydrateFuture = _appState.hydrate();
   _Stage _stage = _Stage.splash;
-
-  @override
-  void initState() {
-    super.initState();
-    // Load whatever the user already saved on this device (business
-    // details, creatives) over the seeded mock data, while splash shows.
-    _appState.hydrate();
-  }
 
   @override
   void dispose() {
@@ -34,11 +29,26 @@ class _PehchaanAppState extends State<PehchaanApp> {
     super.dispose();
   }
 
+  Future<void> _onSplashFinished() async {
+    // Make sure anything saved on-device (a previously completed profile)
+    // has loaded before deciding whether setup is needed.
+    await _hydrateFuture;
+    if (!mounted) return;
+    final complete = _appState.business?.isProfileComplete ?? false;
+    setState(() => _stage = complete ? _Stage.home : _Stage.businessSetup);
+  }
+
   Widget _buildStage() {
     switch (_stage) {
       case _Stage.splash:
-        return SplashScreen(
-          onFinished: () => setState(() => _stage = _Stage.home),
+        return SplashScreen(onFinished: _onSplashFinished);
+      case _Stage.businessSetup:
+        return BusinessSetupScreen(
+          prefilledPhone: _appState.business?.phone ?? '',
+          onComplete: (business) {
+            _appState.setupBusiness(business);
+            setState(() => _stage = _Stage.home);
+          },
         );
       case _Stage.home:
         return const RootShell();

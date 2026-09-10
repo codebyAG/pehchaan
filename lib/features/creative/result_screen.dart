@@ -9,7 +9,6 @@ import 'package:pehchaan/core/theme/app_text_styles.dart';
 import 'package:pehchaan/core/widgets/app_buttons.dart';
 import 'package:pehchaan/core/widgets/creative_preview_card.dart';
 import 'creative_input_screen.dart';
-import 'edit_text_screen.dart';
 import 'format_download_screen.dart';
 import 'generating_screen.dart';
 
@@ -107,57 +106,24 @@ class _ResultScreenState extends State<ResultScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
-                    onPressed: () async {
-                      final result = await Navigator.of(context)
-                          .push<(String, String)>(
-                            MaterialPageRoute(
-                              builder: (_) => EditTextScreen(
-                                category: widget.category,
-                                title: _title,
-                                priceText: _priceText,
-                                businessName: businessName,
-                                phone: phone,
-                                format: widget.format,
-                              ),
-                            ),
-                          );
-                      if (result != null) {
-                        setState(() {
-                          _title = result.$1;
-                          _priceText = result.$2;
-                        });
-                      }
-                    },
-                    child: Text(
-                      'Edit text',
-                      style: AppTextStyles.body.copyWith(
-                        color: AppColors.violet600,
-                        fontWeight: FontWeight.w600,
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            CreativeInputScreen(category: widget.category),
                       ),
+                    );
+                  },
+                  child: Text(
+                    'Change format',
+                    style: AppTextStyles.body.copyWith(
+                      color: AppColors.violet600,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (_) =>
-                              CreativeInputScreen(category: widget.category),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'Change format',
-                      style: AppTextStyles.body.copyWith(
-                        color: AppColors.violet600,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
               const SizedBox(height: 12),
               Row(

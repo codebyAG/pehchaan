@@ -32,9 +32,10 @@ class _PehchaanAppState extends State<PehchaanApp> {
   Future<void> _onSplashFinished() async {
     // Make sure anything saved on-device (a previously completed profile)
     // has loaded before deciding whether setup is needed. hydrate() never
-    // throws, but a storage hiccup must never strand the app on splash.
+    // throws, but a storage call that hangs (platform channel issue, slow
+    // disk) must never strand the app on splash forever.
     try {
-      await _hydrateFuture;
+      await _hydrateFuture.timeout(const Duration(seconds: 3));
     } catch (_) {
       // Fall through with whatever business state we already have.
     }

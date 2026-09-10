@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:pehchaan/app.dart';
 
 void main() {
+  setUp(() {
+    // hydrate() awaits SharedPreferences.getInstance() on startup — without
+    // this, the platform channel call never resolves in a widget test and
+    // the app stays stuck on splash forever.
+    SharedPreferences.setMockInitialValues({});
+  });
+
   testWidgets('Splash leads straight into Home with no login gate', (
     WidgetTester tester,
   ) async {

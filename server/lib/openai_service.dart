@@ -103,14 +103,14 @@ Future<String> generateImagePrompt(String userRequest, {required String apiKey})
 /// OpenAI's image generation model, returned as base64 PNG data.
 Future<String> generateImage(String prompt, {required String apiKey}) async {
   final body = {
-    'model': 'gpt-image-2',
+    // gpt-image-2.5-sunburst (Sept 2026) — OpenAI's precision-focused
+    // image model, built for premium production-ready campaign creative.
+    'model': 'gpt-image-2.5-sunburst',
     'prompt': prompt,
     'size': '1024x1024',
-    // "high" quality can take 2+ minutes; "medium" is a few times faster
-    // and still solidly production-looking — the better default for a
-    // mobile app where the user is watching a spinner. Bump to "high"
-    // once the UX can show progress or generate in the background.
-    'quality': 'medium',
+    // "max" is the best of its six quality levels — slower (a few
+    // minutes) but the sharpest, most polished result.
+    'quality': 'max',
     'n': 1,
   };
 
@@ -148,7 +148,7 @@ Future<Map<String, dynamic>> _postJson(
     request.add(utf8.encode(jsonEncode(body)));
 
     final response = await request.close().timeout(
-          const Duration(seconds: 180),
+          const Duration(seconds: 300),
           onTimeout: () => throw OpenAiException('OpenAI se response nahi aaya. Dobara try karein.', statusCode: 504),
         );
     final raw = await response.transform(utf8.decoder).join();

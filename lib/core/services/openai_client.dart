@@ -106,10 +106,15 @@ class OpenAiClient {
     final json = await _postJson(
       Uri.parse('https://api.openai.com/v1/images/generations'),
       {
-        'model': 'gpt-image-2',
+        // gpt-image-2.5-sunburst (Sept 2026) — OpenAI's precision-focused
+        // image model, built for premium production-ready campaign
+        // creative, which is exactly this app's use case. "max" is the
+        // best of its six quality levels; it's slower than "high" but
+        // gives the sharpest, most polished result.
+        'model': 'gpt-image-2.5-sunburst',
         'prompt': prompt,
         'size': '1024x1024',
-        'quality': 'medium',
+        'quality': 'max',
         'n': 1,
       },
     );
@@ -136,7 +141,7 @@ class OpenAiClient {
             },
             body: jsonEncode(body),
           )
-          .timeout(const Duration(seconds: 180));
+          .timeout(const Duration(seconds: 300));
     } on Exception {
       throw OpenAiException('Internet connection check karein.');
     }

@@ -81,6 +81,7 @@ flutter:
   assets:
     - assets/pehchaanapp_logo.png
     - assets/pehchaan_logo_horizontal.png
+    - assets/watermark.png
     - assets/banners/
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -2,68 +2,50 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:image/image.dart' as img;
 
-const _logoAsset = 'assets/pehchaan_logo_horizontal.png';
+const _watermarkAsset = 'assets/watermark.png';
 
-/// Stamps the Pehchaan logo — on a simple light-white background, so it
-/// stays legible against any generated photo — onto the bottom-right
-/// corner of every AI-generated image. Baked into the pixels so it stays
-/// on the picture through download/share, not just an on-screen overlay.
-/// Runs off the UI thread since decoding/encoding a full-size PNG isn't
-/// instant.
+/// Stamps the Pehchaan watermark badge onto the bottom-right corner of
+/// every AI-generated image. Baked into the pixels so it stays on the
+/// picture through download/share, not just an on-screen overlay. Runs
+/// off the UI thread since decoding/encoding a full-size PNG isn't instant.
 Future<Uint8List> addWatermark(Uint8List sourcePngBytes) async {
-  final logoData = await rootBundle.load(_logoAsset);
-  final logoBytes = logoData.buffer.asUint8List(
-    logoData.offsetInBytes,
-    logoData.lengthInBytes,
+  final data = await rootBundle.load(_watermarkAsset);
+  final watermarkBytes = data.buffer.asUint8List(
+    data.offsetInBytes,
+    data.lengthInBytes,
   );
-  return compute(_stampWatermark, _WatermarkArgs(sourcePngBytes, logoBytes));
+  return compute(_stampWatermark, _WatermarkArgs(sourcePngBytes, watermarkBytes));
 }
 
 class _WatermarkArgs {
-  const _WatermarkArgs(this.source, this.logo);
+  const _WatermarkArgs(this.source, this.watermark);
   final Uint8List source;
-  final Uint8List logo;
+  final Uint8List watermark;
 }
 
 Uint8List _stampWatermark(_WatermarkArgs args) {
   final base = img.decodeImage(args.source);
-  final logo = img.decodeImage(args.logo);
-  if (base == null || logo == null) return args.source;
+  final watermark = img.decodeImage(args.watermark);
+  if (base == null || watermark == null) return args.source;
 
-  final targetLogoWidth = (base.width * 0.16).round().clamp(40, base.width - 32);
-  final scale = targetLogoWidth / logo.width;
-  final targetLogoHeight = (logo.height * scale).round().clamp(1, base.height - 32);
-  final resizedLogo = img.copyResize(
-    logo,
-    width: targetLogoWidth,
-    height: targetLogoHeight,
+  final targetWidth = (base.width * 0.18).round().clamp(48, base.width - 24);
+  final scale = targetWidth / watermark.width;
+  final targetHeight = (watermark.height * scale).round().clamp(1, base.height - 24);
+  final resized = img.copyResize(
+    watermark,
+    width: targetWidth,
+    height: targetHeight,
     interpolation: img.Interpolation.average,
   );
 
-  final padX = (resizedLogo.width * 0.22).round();
-  final padY = (resizedLogo.height * 0.38).round();
-  final chipWidth = resizedLogo.width + padX * 2;
-  final chipHeight = resizedLogo.height + padY * 2;
+  final margin = (base.width * 0.03).round().clamp(8, 40);
+  final dstX = base.width - resized.width - margin;
+  final dstY = base.height - resized.height - margin;
 
-  final margin = (base.width * 0.035).round().clamp(10, 48);
-  final chipX = base.width - chipWidth - margin;
-  final chipY = base.height - chipHeight - margin;
+  img.compositeImage(base, resized, dstX: dstX, dstY: dstY);
 
-  img.fillRect(
-    base,
-    x1: chipX,
-    y1: chipY,
-    x2: chipX + chipWidth - 1,
-    y2: chipY + chipHeight - 1,
-    color: img.ColorRgba8(255, 255, 255, 235),
-  );
-
-  img.compositeImage(
-    base,
-    resizedLogo,
-    dstX: chipX + padX,
-    dstY: chipY + padY,
-  );
-
-  return Uint8List.fromList(img.encodePng(base));
+  // Flatten to RGB (no alpha channel) so the exported photo is always
+  // fully solid — no chance of a stray transparent/checkered patch.
+  final flattened = base.convert(numChannels: 3);
+  return Uint8List.fromList(img.encodePng(flattened));
 }

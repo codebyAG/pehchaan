@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'package:pehchaan/core/models/business.dart';
+import 'package:pehchaan/core/services/image_picker_helper.dart';
 import 'package:pehchaan/core/theme/app_colors.dart';
 import 'package:pehchaan/core/theme/app_text_styles.dart';
 import 'package:pehchaan/core/widgets/app_buttons.dart';
@@ -33,7 +36,8 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
   final _areaController = TextEditingController();
   final _addressController = TextEditingController();
 
-  final List<String> _photos = [];
+  final List<Uint8List> _photos = [];
+  Uint8List? _logoBytes;
 
   static const _categories = [
     'Tailor',
@@ -110,8 +114,19 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
         area: _areaController.text.trim(),
         address: _addressController.text.trim(),
         photos: _photos,
+        logoBytes: _logoBytes,
       ),
     );
+  }
+
+  Future<void> _pickPhoto() async {
+    final bytes = await pickImageFromGallery();
+    if (bytes != null) setState(() => _photos.add(bytes));
+  }
+
+  Future<void> _pickLogo() async {
+    final bytes = await pickImageFromGallery(maxDimension: 800);
+    if (bytes != null) setState(() => _logoBytes = bytes);
   }
 
   @override
@@ -244,32 +259,42 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
         Wrap(
           spacing: 12,
           runSpacing: 12,
-          children: List.generate(3, (i) {
-            final filled = i < _photos.length;
-            return _PhotoSlot(
-              filled: filled,
-              onTap: () => setState(() => _photos.add('photo_$i')),
-              onRemove: filled
-                  ? () => setState(() => _photos.removeAt(i))
-                  : null,
-            );
-          }),
+          children: [
+            for (var i = 0; i < _photos.length; i++)
+              _PhotoSlot(
+                imageBytes: _photos[i],
+                onTap: _pickPhoto,
+                onRemove: () => setState(() => _photos.removeAt(i)),
+              ),
+            if (_photos.length < 3)
+              _PhotoSlot(imageBytes: null, onTap: _pickPhoto, onRemove: null),
+          ],
         ),
         const SizedBox(height: 24),
         Row(
           children: [
-            Container(
-              width: 56,
-              height: 56,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: AppColors.violet100,
-                borderRadius: BorderRadius.circular(14),
+            InkWell(
+              onTap: _pickLogo,
+              borderRadius: BorderRadius.circular(14),
+              child: Container(
+                width: 56,
+                height: 56,
+                alignment: Alignment.center,
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  color: AppColors.violet100,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: _logoBytes != null
+                    ? Image.memory(_logoBytes!, fit: BoxFit.cover)
+                    : const Icon(Icons.add_rounded, color: AppColors.violet600),
               ),
-              child: const Icon(Icons.add_rounded, color: AppColors.violet600),
             ),
             const SizedBox(width: 12),
-            Text('Add your logo (optional)', style: AppTextStyles.body),
+            Text(
+              _logoBytes != null ? 'Logo add ho gaya' : 'Add your logo (optional)',
+              style: AppTextStyles.body,
+            ),
           ],
         ),
         const SizedBox(height: 24),
@@ -352,29 +377,30 @@ class _BusinessSetupScreenState extends State<BusinessSetupScreen> {
 }
 
 class _PhotoSlot extends StatelessWidget {
-  const _PhotoSlot({required this.filled, required this.onTap, this.onRemove});
+  const _PhotoSlot({
+    required this.imageBytes,
+    required this.onTap,
+    this.onRemove,
+  });
 
-  final bool filled;
+  final Uint8List? imageBytes;
   final VoidCallback onTap;
   final VoidCallback? onRemove;
 
   @override
   Widget build(BuildContext context) {
-    if (filled) {
+    if (imageBytes != null) {
       return Stack(
         children: [
           Container(
             width: 104,
             height: 104,
+            clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               color: AppColors.violet200,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Icon(
-              Icons.storefront_rounded,
-              color: AppColors.violet600,
-              size: 32,
-            ),
+            child: Image.memory(imageBytes!, fit: BoxFit.cover),
           ),
           Positioned(
             top: 6,

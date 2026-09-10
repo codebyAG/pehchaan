@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 class Business {
   const Business({
     required this.name,
@@ -7,6 +10,7 @@ class Business {
     this.area = '',
     this.address = '',
     this.photos = const [],
+    this.logoBytes,
   });
 
   final String name;
@@ -15,7 +19,14 @@ class Business {
   final String city;
   final String area;
   final String address;
-  final List<String> photos;
+
+  /// Real photos the owner uploaded (gallery/camera), not placeholders.
+  final List<Uint8List> photos;
+
+  /// The business logo, composited onto generated creatives — AI image
+  /// models can't reliably render a specific real logo, so this is the
+  /// actual uploaded image, not something GPT draws.
+  final Uint8List? logoBytes;
 
   String get location => [area, city].where((s) => s.isNotEmpty).join(', ');
 
@@ -26,7 +37,9 @@ class Business {
     String? city,
     String? area,
     String? address,
-    List<String>? photos,
+    List<Uint8List>? photos,
+    Uint8List? logoBytes,
+    bool clearLogo = false,
   }) {
     return Business(
       name: name ?? this.name,
@@ -36,6 +49,7 @@ class Business {
       area: area ?? this.area,
       address: address ?? this.address,
       photos: photos ?? this.photos,
+      logoBytes: clearLogo ? null : (logoBytes ?? this.logoBytes),
     );
   }
 
@@ -46,16 +60,25 @@ class Business {
     'city': city,
     'area': area,
     'address': address,
-    'photos': photos,
+    'photos': photos.map(base64Encode).toList(),
+    'logo': logoBytes != null ? base64Encode(logoBytes!) : null,
   };
 
-  factory Business.fromJson(Map<String, dynamic> json) => Business(
-    name: json['name'] as String? ?? '',
-    category: json['category'] as String? ?? '',
-    phone: json['phone'] as String? ?? '',
-    city: json['city'] as String? ?? '',
-    area: json['area'] as String? ?? '',
-    address: json['address'] as String? ?? '',
-    photos: (json['photos'] as List?)?.cast<String>() ?? const [],
-  );
+  factory Business.fromJson(Map<String, dynamic> json) {
+    final logo = json['logo'] as String?;
+    return Business(
+      name: json['name'] as String? ?? '',
+      category: json['category'] as String? ?? '',
+      phone: json['phone'] as String? ?? '',
+      city: json['city'] as String? ?? '',
+      area: json['area'] as String? ?? '',
+      address: json['address'] as String? ?? '',
+      photos: (json['photos'] as List?)
+              ?.cast<String>()
+              .map(base64Decode)
+              .toList() ??
+          const [],
+      logoBytes: logo != null && logo.isNotEmpty ? base64Decode(logo) : null,
+    );
+  }
 }

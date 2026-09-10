@@ -44,7 +44,22 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
   final List<String> _photos = [];
 
   @override
+  void initState() {
+    super.initState();
+    // Every field feeds the AI prompt, so the Generate button needs to
+    // react as the user types, not just on submit.
+    for (final c in [_primaryController, _priceController, _secondaryController]) {
+      c.addListener(_onFieldChanged);
+    }
+  }
+
+  void _onFieldChanged() => setState(() {});
+
+  @override
   void dispose() {
+    for (final c in [_primaryController, _priceController, _secondaryController]) {
+      c.removeListener(_onFieldChanged);
+    }
     _primaryController.dispose();
     _priceController.dispose();
     _secondaryController.dispose();
@@ -68,6 +83,29 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
     }
   }
 
+  /// Every field is required — without it, the AI doesn't have enough
+  /// context to generate something that actually matches what was asked.
+  bool get _isFormValid {
+    final primary = _primaryController.text.trim().isNotEmpty;
+    final price = _priceController.text.trim().isNotEmpty;
+    final secondary = _secondaryController.text.trim().isNotEmpty;
+
+    switch (widget.category) {
+      case CreativeCategory.offer:
+        return primary && price && secondary;
+      case CreativeCategory.festival:
+        return primary && price && secondary;
+      case CreativeCategory.product:
+        return primary && price;
+      case CreativeCategory.service:
+        return primary && price && secondary;
+      case CreativeCategory.newArrival:
+        return primary && secondary;
+      case CreativeCategory.announcement:
+        return primary && secondary;
+    }
+  }
+
   void _addPhoto() async {
     final photo = await Navigator.of(context).push<String>(
       MaterialPageRoute(builder: (_) => const PhotoPickerScreen()),
@@ -76,9 +114,8 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
   }
 
   void _generate() {
-    final title = _primaryController.text.trim().isEmpty
-        ? '${widget.category.label} Special'
-        : _primaryController.text.trim();
+    if (!_isFormValid) return;
+    final title = _primaryController.text.trim();
     final priceText = _priceController.text.trim().isEmpty
         ? '₹999'
         : '₹${_priceController.text.trim()}';
@@ -95,9 +132,9 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
     );
   }
 
-  /// Folds in every field the user filled on this form — plus the saved
-  /// business name, category and location — so GPT gets the same detail
-  /// a human designer would be briefed with, not just the headline text.
+  /// Folds in every field the user filled on this form — plus the full
+  /// saved business profile — so GPT gets the same brief a human designer
+  /// would get, not just the headline text.
   String _buildAiRequest() {
     final business = AppStateScope.of(context, listen: false).business;
     final primary = _primaryController.text.trim();
@@ -108,36 +145,41 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
 
     switch (widget.category) {
       case CreativeCategory.offer:
-        if (primary.isNotEmpty) parts.add('Offer: $primary.');
-        if (price.isNotEmpty) parts.add('Price: ₹$price.');
-        if (secondary.isNotEmpty) parts.add('Occasion: $secondary.');
+        parts.add('Offer: $primary.');
+        parts.add('Price: ₹$price.');
+        parts.add('Occasion: $secondary.');
       case CreativeCategory.festival:
-        if (secondary.isNotEmpty) parts.add('Festival: $secondary.');
-        if (primary.isNotEmpty) parts.add('Greeting/offer: $primary.');
-        if (price.isNotEmpty) parts.add('Price: ₹$price.');
+        parts.add('Festival: $secondary.');
+        parts.add('Greeting/offer: $primary.');
+        parts.add('Price: ₹$price.');
       case CreativeCategory.product:
-        if (primary.isNotEmpty) parts.add('Product: $primary.');
-        if (price.isNotEmpty) parts.add('Price: ₹$price.');
+        parts.add('Product: $primary.');
+        parts.add('Price: ₹$price.');
       case CreativeCategory.service:
-        if (primary.isNotEmpty) parts.add('Service: $primary.');
-        if (price.isNotEmpty) parts.add('Starting price: ₹$price.');
-        if (secondary.isNotEmpty) parts.add('Benefit: $secondary.');
+        parts.add('Service: $primary.');
+        parts.add('Starting price: ₹$price.');
+        parts.add('Benefit: $secondary.');
       case CreativeCategory.newArrival:
-        if (primary.isNotEmpty) parts.add('New arrival: $primary.');
-        if (secondary.isNotEmpty) parts.add('$secondary.');
+        parts.add('New arrival: $primary.');
+        parts.add('$secondary.');
       case CreativeCategory.announcement:
-        if (primary.isNotEmpty) parts.add('Announcement: $primary.');
-        if (secondary.isNotEmpty) parts.add('When: $secondary.');
+        parts.add('Announcement: $primary.');
+        parts.add('When: $secondary.');
     }
 
     if (business != null) {
       final bizBits = <String>[business.name];
       if (business.category.isNotEmpty) bizBits.add(business.category);
       if (business.location.isNotEmpty) bizBits.add(business.location);
+      if (business.address.isNotEmpty) bizBits.add(business.address);
       parts.add('For the business: ${bizBits.join(', ')}.');
+      if (business.phone.isNotEmpty) {
+        parts.add('Contact: ${business.phone}.');
+      }
     }
 
     parts.add('Format: ${_format.label}.');
+    parts.add('Language for any accompanying text: ${_language.label}.');
     return parts.join(' ');
   }
 
@@ -198,7 +240,10 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              AccentButton(label: 'Generate creative', onPressed: _generate),
+              AccentButton(
+                label: 'Generate creative',
+                onPressed: _isFormValid ? _generate : null,
+              ),
             ],
           ),
         ),
@@ -261,7 +306,7 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
           ),
           const SizedBox(height: 16),
           AppTextField(
-            label: 'Price (optional)',
+            label: 'Price',
             hint: '999',
             controller: _priceController,
             keyboardType: TextInputType.number,
@@ -323,40 +368,15 @@ class _CreativeInputScreenState extends State<CreativeInputScreen> {
         ];
       case CreativeCategory.announcement:
         return [
-          Text('What to announce', style: AppTextStyles.fieldLabel),
-          const SizedBox(height: 8),
-          TextField(
+          AppTextField(
+            label: 'What to announce',
+            hint: 'e.g. Shop will remain closed on Monday',
             controller: _primaryController,
             maxLines: 3,
-            style: AppTextStyles.body,
-            decoration: InputDecoration(
-              hintText: 'e.g. Shop will remain closed on Monday',
-              filled: true,
-              fillColor: AppColors.violet100,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 18,
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide.none,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(
-                  color: AppColors.violet600,
-                  width: 2,
-                ),
-              ),
-            ),
           ),
           const SizedBox(height: 16),
           AppTextField(
-            label: 'Date / time (optional)',
+            label: 'Date / time',
             hint: 'e.g. 12 Oct, 10 AM',
             controller: _secondaryController,
           ),

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -23,17 +24,25 @@ class AiImageScreen extends StatefulWidget {
 }
 
 class _AiImageScreenState extends State<AiImageScreen> {
+  /// Paced off typical "max" quality generation time; see
+  /// GeneratingScreen for why this is an estimate, not real progress.
+  static const _estimatedTotal = Duration(seconds: 140);
+
   final _service = const AiImageService();
   final _controller = TextEditingController();
+  final _stopwatch = Stopwatch();
 
   CreativeCategory? _selectedCategory;
   _State _state = _State.idle;
   Uint8List? _imageBytes;
   String? _errorMessage;
+  double _progress = 0;
+  Timer? _progressTimer;
 
   @override
   void dispose() {
     _controller.dispose();
+    _progressTimer?.cancel();
     super.dispose();
   }
 
@@ -53,7 +62,9 @@ class _AiImageScreenState extends State<AiImageScreen> {
       final bizBits = <String>[business.name];
       if (business.category.isNotEmpty) bizBits.add(business.category);
       if (business.location.isNotEmpty) bizBits.add(business.location);
+      if (business.address.isNotEmpty) bizBits.add(business.address);
       parts.add('For the business: ${bizBits.join(', ')}.');
+      if (business.phone.isNotEmpty) parts.add('Contact: ${business.phone}.');
     }
     return parts.join(' ');
   }
@@ -66,23 +77,38 @@ class _AiImageScreenState extends State<AiImageScreen> {
     setState(() {
       _state = _State.generating;
       _errorMessage = null;
+      _progress = 0;
+    });
+
+    _stopwatch
+      ..reset()
+      ..start();
+    _progressTimer?.cancel();
+    _progressTimer = Timer.periodic(const Duration(milliseconds: 250), (_) {
+      if (!mounted) return;
+      final elapsed = _stopwatch.elapsed.inMilliseconds / _estimatedTotal.inMilliseconds;
+      setState(() => _progress = (1 - (1 - elapsed).clamp(0.0, 1.0)) * 0.92);
     });
 
     try {
       final bytes = await _service.generateImage(request);
       if (!mounted) return;
+      _progressTimer?.cancel();
       setState(() {
         _imageBytes = Uint8List.fromList(bytes);
         _state = _State.done;
+        _progress = 1;
       });
     } on AiImageException catch (e) {
       if (!mounted) return;
+      _progressTimer?.cancel();
       setState(() {
         _errorMessage = e.message;
         _state = _State.error;
       });
     } catch (_) {
       if (!mounted) return;
+      _progressTimer?.cancel();
       setState(() {
         _errorMessage = 'Kuch galat ho gaya. Dobara try karein.';
         _state = _State.error;
@@ -176,9 +202,21 @@ class _AiImageScreenState extends State<AiImageScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircularProgressIndicator(color: AppColors.violet600),
+              SizedBox(
+                width: 56,
+                height: 56,
+                child: CircularProgressIndicator(
+                  value: _progress,
+                  color: AppColors.violet600,
+                ),
+              ),
               const SizedBox(height: 16),
               Text('Aapki image ban rahi hai…', style: AppTextStyles.body),
+              const SizedBox(height: 4),
+              Text(
+                '${(_progress * 100).round()}%',
+                style: AppTextStyles.fieldLabel,
+              ),
             ],
           ),
         );

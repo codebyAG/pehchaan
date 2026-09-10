@@ -14,6 +14,8 @@ class AppTextField extends StatelessWidget {
     this.suffixIcon,
     this.readOnly = false,
     this.onTap,
+    this.onChanged,
+    this.maxLines = 1,
   });
 
   final String label;
@@ -23,6 +25,8 @@ class AppTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool readOnly;
   final VoidCallback? onTap;
+  final ValueChanged<String>? onChanged;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +40,8 @@ class AppTextField extends StatelessWidget {
           keyboardType: keyboardType,
           readOnly: readOnly,
           onTap: onTap,
+          onChanged: onChanged,
+          maxLines: maxLines,
           style: AppTextStyles.body,
           decoration: InputDecoration(
             hintText: hint,

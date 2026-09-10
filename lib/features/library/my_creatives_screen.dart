@@ -274,9 +274,9 @@ class _CreativeTile extends StatelessWidget {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.black.withValues(alpha: 0.0),
-                      Colors.black.withValues(alpha: 0.55),
+                      Colors.black.withValues(alpha: 0.75),
                     ],
-                    stops: const [0.5, 1.0],
+                    stops: const [0.35, 1.0],
                   ),
                 ),
               ),
@@ -303,26 +303,24 @@ class _CreativeTile extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  if (!hasImage) ...[
-                    Text(
-                      creative.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.body.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  Text(
+                    creative.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.body.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      creative.priceText,
-                      style: AppTextStyles.sectionHeading.copyWith(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    creative.priceText,
+                    style: AppTextStyles.sectionHeading.copyWith(
+                      color: Colors.white,
+                      fontSize: 20,
                     ),
-                    const SizedBox(height: 6),
-                  ],
+                  ),
+                  const SizedBox(height: 6),
                   Text(
                     _formatDate(creative.createdAt),
                     style: AppTextStyles.fieldLabel.copyWith(

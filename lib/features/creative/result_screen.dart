@@ -94,27 +94,15 @@ class _ResultScreenState extends State<ResultScreen> {
             children: [
               Expanded(
                 child: Center(
-                  child: widget.imageBytes != null
-                      ? AspectRatio(
-                          aspectRatio: widget.format.aspectRatio,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(18),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: AppColors.softShadow,
-                              ),
-                              child: Image.memory(widget.imageBytes!, fit: BoxFit.cover),
-                            ),
-                          ),
-                        )
-                      : CreativePreviewCard(
+                  child: CreativePreviewCard(
                           tag: widget.category.label,
                           title: _title,
                           priceText: _priceText,
                           businessName: businessName,
                           phone: phone,
+                          logoBytes: business?.logoBytes,
                           aspectRatio: widget.format.aspectRatio,
+                          imageBytes: widget.imageBytes,
                         ),
                 ),
               ),

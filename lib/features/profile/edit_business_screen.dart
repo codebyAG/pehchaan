@@ -1,7 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
+import 'package:pehchaan/core/services/image_picker_helper.dart';
 import 'package:pehchaan/core/state/app_state.dart';
 import 'package:pehchaan/core/theme/app_colors.dart';
+import 'package:pehchaan/core/theme/app_text_styles.dart';
 import 'package:pehchaan/core/widgets/app_buttons.dart';
 import 'package:pehchaan/core/widgets/app_text_field.dart';
 
@@ -32,6 +36,14 @@ class _EditBusinessScreenState extends State<EditBusinessScreen> {
   late final _addressController = TextEditingController(
     text: _appState.business?.address,
   );
+  late Uint8List? _logoBytes = _appState.business?.logoBytes;
+
+  Future<void> _pickLogo() async {
+    final bytes = await pickImageFromGallery(maxDimension: 800);
+    if (bytes != null) setState(() => _logoBytes = bytes);
+  }
+
+  void _removeLogo() => setState(() => _logoBytes = null);
 
   void _save() {
     final business = _appState.business;
@@ -44,6 +56,8 @@ class _EditBusinessScreenState extends State<EditBusinessScreen> {
         city: _cityController.text.trim(),
         area: _areaController.text.trim(),
         address: _addressController.text.trim(),
+        logoBytes: _logoBytes,
+        clearLogo: _logoBytes == null,
       ),
     );
     ScaffoldMessenger.of(
@@ -66,6 +80,46 @@ class _EditBusinessScreenState extends State<EditBusinessScreen> {
               Expanded(
                 child: ListView(
                   children: [
+                    Text('Business logo', style: AppTextStyles.fieldLabel),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: _pickLogo,
+                          borderRadius: BorderRadius.circular(14),
+                          child: Container(
+                            width: 64,
+                            height: 64,
+                            alignment: Alignment.center,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              color: AppColors.violet100,
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: _logoBytes != null
+                                ? Image.memory(_logoBytes!, fit: BoxFit.cover)
+                                : const Icon(Icons.add_rounded, color: AppColors.violet600),
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        TextButton(
+                          onPressed: _pickLogo,
+                          child: Text(
+                            _logoBytes != null ? 'Replace' : 'Upload logo',
+                            style: AppTextStyles.body.copyWith(color: AppColors.violet600, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        if (_logoBytes != null)
+                          TextButton(
+                            onPressed: _removeLogo,
+                            child: Text(
+                              'Remove',
+                              style: AppTextStyles.body.copyWith(color: const Color(0xFFD94A2B)),
+                            ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
                     AppTextField(
                       label: 'Business name',
                       controller: _nameController,

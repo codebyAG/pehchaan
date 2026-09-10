@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Pehchaan needs access to your photos so you can upload your business logo and shop photos.</string>
 </dict>
 </plist>

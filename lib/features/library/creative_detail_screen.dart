@@ -51,6 +51,7 @@ class CreativeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final logoBytes = AppStateScope.of(context).business?.logoBytes;
     return Scaffold(
       backgroundColor: AppColors.violet900,
       body: SafeArea(
@@ -61,25 +62,16 @@ class CreativeDetailScreen extends StatelessWidget {
                 child: InteractiveViewer(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: creative.imageBytes != null
-                        ? AspectRatio(
-                            aspectRatio: creative.format.aspectRatio,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(18),
-                              child: Image.memory(
-                                creative.imageBytes!,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          )
-                        : CreativePreviewCard(
-                            tag: creative.category.label,
-                            title: creative.title,
-                            priceText: creative.priceText,
-                            businessName: creative.businessName,
-                            phone: creative.phone,
-                            aspectRatio: creative.format.aspectRatio,
-                          ),
+                    child: CreativePreviewCard(
+                      tag: creative.category.label,
+                      title: creative.title,
+                      priceText: creative.priceText,
+                      businessName: creative.businessName,
+                      phone: creative.phone,
+                      aspectRatio: creative.format.aspectRatio,
+                      imageBytes: creative.imageBytes,
+                      logoBytes: logoBytes,
+                    ),
                   ),
                 ),
               ),

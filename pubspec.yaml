@@ -39,6 +39,7 @@ dependencies:
   image_picker: ^1.1.2
   gal: ^2.3.0
   share_plus: ^10.1.4
+  image: ^4.2.0
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +80,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/pehchaanapp_logo.png
+    - assets/pehchaan_logo_horizontal.png
     - assets/banners/
 
   # An image asset can refer to one or more resolution-specific "variants", see

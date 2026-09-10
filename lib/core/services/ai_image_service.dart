@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:pehchaan/core/constants/key_constants.dart';
 import 'openai_client.dart';
+import 'watermark.dart';
 
 /// Thrown for any failure generating an AI image. [message] is always
 /// safe to show directly to the user.
@@ -33,10 +35,17 @@ class AiImageService {
     try {
       final prompt = await client.generateImagePrompt(userRequest);
       final base64Image = await client.generateImage(prompt);
+      Uint8List bytes;
       try {
-        return base64Decode(base64Image);
+        bytes = base64Decode(base64Image);
       } catch (_) {
         throw AiImageException('Image load nahi ho payi. Dobara try karein.');
+      }
+      try {
+        return await addWatermark(bytes);
+      } catch (_) {
+        // Watermarking is a nice-to-have — never let it block the result.
+        return bytes;
       }
     } on OpenAiException catch (e) {
       throw AiImageException(e.userMessage);

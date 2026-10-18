@@ -1,10 +1,10 @@
 # Pehchaan AI server (MVP)
 
-> **Currently unused.** The app now calls OpenAI directly from the device
-> using the key in `lib/core/constants/key_constants.dart` (solo/local
-> testing only). This server is the secure alternative — switch back to
-> it (point `AiImageService` at it again, like `server/README.md` history
-> shows) before this app is ever shared with anyone else.
+> **Currently unused.** The app no longer calls OpenAI at all — the bundled
+> key (`key_constants.dart`) was removed, and AI generation is disabled in
+> the app (`AiImageService.isAvailable = false`) until the Pehchaan backend
+> exposes a generation endpoint. This folder is kept only as a reference
+> for how that endpoint can hold the key server-side.
 
 A tiny local backend that holds the OpenAI API key and proxies AI image
 generation for the Flutter app. Pure `dart:io` — no external packages, no

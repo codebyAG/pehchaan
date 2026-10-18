@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:pehchaan/core/api/models.dart';
+import 'package:pehchaan/core/services/ai_image_service.dart';
 import 'package:pehchaan/core/state/session.dart';
 import 'package:pehchaan/core/theme/app_colors.dart';
 import 'package:pehchaan/core/theme/app_text_styles.dart';
@@ -55,7 +56,9 @@ class PosterHomeScreen extends StatelessWidget {
           const SizedBox(width: 8),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: !AiImageService.isAvailable
+          ? null
+          : FloatingActionButton.extended(
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => const AiImageScreen()),
         ),

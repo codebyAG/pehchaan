@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:pehchaan/core/services/ai_image_service.dart';
 import 'package:pehchaan/core/widgets/app_bottom_nav.dart';
 import 'package:pehchaan/features/creative/creative_input_screen.dart';
 import 'package:pehchaan/features/posters/poster_home_screen.dart';
@@ -22,6 +23,12 @@ class _RootShellState extends State<RootShell> {
   static const _tabToPage = {0: 0, 2: 1, 3: 2};
 
   Future<void> _startCreateFlow() async {
+    if (!AiImageService.isAvailable) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('AI creatives jaldi aa rahe hain.')),
+      );
+      return;
+    }
     final category = await TypePickerSheet.show(context);
     if (category != null && mounted) {
       Navigator.of(context).push(

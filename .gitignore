@@ -48,4 +48,3 @@ app.*.map.json
 .env
 server/.env
 *.env
-lib/core/constants/key_constants.dart

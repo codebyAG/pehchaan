@@ -1,70 +1,44 @@
+import 'dart:typed_data';
+
 import 'package:flutter/widgets.dart';
 
 import 'package:pehchaan/core/models/business.dart';
 import 'package:pehchaan/core/models/creative.dart';
-import 'package:pehchaan/core/models/user.dart';
 import 'local_storage.dart';
 
+/// Local state for the AI creative tools: the business profile in the
+/// shape those screens use, and the creatives saved on this device.
 class AppState extends ChangeNotifier {
-  AppUser? user;
   Business? business;
   final List<Creative> savedCreatives = [];
 
-  AppState();
+  String? _logoUrl;
 
-  /// Pre-seeded with a sample business and creatives so the app opens
-  /// straight into a populated Home — no login or setup gate for this
-  /// mock, Play‑Store‑listing build. [hydrate] then overlays anything the
-  /// user has actually saved on this device, if any.
-  factory AppState.withMockData() {
-    final state = AppState();
-    const business = Business(
-      name: 'Raju Tailor',
-      category: 'Tailor Shop',
-      phone: '+91 98765 43210',
-      city: 'Kanpur',
-      area: 'Naveen Market',
-      address: '',
-    );
-    state.business = business;
-    state._seedMockCreatives(business);
-    return state;
-  }
-
-  /// Loads whatever the user previously filled in/saved on this device
-  /// (business details, creatives) and replaces the seeded mock data with
-  /// it. Safe to call once at startup; no-ops if nothing was saved yet.
+  /// Loads the AI creatives saved on this device. The business profile is
+  /// not read from here — the API (`GET /v1/me`) is its source of truth and
+  /// arrives through [syncBusiness].
   Future<void> hydrate() async {
-    final savedBusiness = await LocalStorage.loadBusiness();
     final savedList = await LocalStorage.loadCreatives();
-
-    if (savedBusiness == null && savedList == null) return;
-
-    if (savedBusiness != null) business = savedBusiness;
-    if (savedList != null) {
-      savedCreatives
-        ..clear()
-        ..addAll(savedList);
-    }
+    if (savedList == null) return;
+    savedCreatives
+      ..clear()
+      ..addAll(savedList);
     notifyListeners();
   }
 
-  void setLanguage(AppLanguage language) {
-    user = (user ?? const AppUser(phone: '')).copyWith(language: language);
+  /// Mirrors the server profile. Keeps the already-downloaded logo when the
+  /// logo URL hasn't changed.
+  void syncBusiness(Business? value, {String? logoUrl}) {
+    final keepLogo = value != null && logoUrl != null && logoUrl == _logoUrl;
+    business = keepLogo ? value.copyWith(logoBytes: business?.logoBytes) : value;
+    _logoUrl = value == null ? null : logoUrl;
     notifyListeners();
   }
 
-  void login(String phone) {
-    user = AppUser(phone: phone);
+  void setLogoBytes(String logoUrl, Uint8List bytes) {
+    if (logoUrl != _logoUrl || business == null) return;
+    business = business!.copyWith(logoBytes: bytes);
     notifyListeners();
-  }
-
-  void setupBusiness(Business value) {
-    final isFirstSetup = business == null;
-    business = value;
-    if (isFirstSetup) _seedMockCreatives(value);
-    notifyListeners();
-    LocalStorage.saveBusiness(value);
   }
 
   void addCreative(Creative creative) {
@@ -83,50 +57,6 @@ class AppState extends ChangeNotifier {
     savedCreatives.removeWhere(creatives.toSet().contains);
     notifyListeners();
     LocalStorage.saveCreatives(savedCreatives);
-  }
-
-  void _seedMockCreatives(Business business) {
-    final phone = business.phone.isNotEmpty
-        ? business.phone
-        : '+91 98765 43210';
-    savedCreatives.addAll([
-      Creative(
-        category: CreativeCategory.offer,
-        title: 'Festive Special',
-        priceText: '₹999',
-        businessName: business.name,
-        phone: phone,
-        format: CreativeFormat.post,
-        createdAt: DateTime.now().subtract(const Duration(days: 1)),
-      ),
-      Creative(
-        category: CreativeCategory.newArrival,
-        title: 'Festive Collection 2026',
-        priceText: '₹1499',
-        businessName: business.name,
-        phone: phone,
-        format: CreativeFormat.story,
-        createdAt: DateTime.now().subtract(const Duration(days: 3)),
-      ),
-      Creative(
-        category: CreativeCategory.service,
-        title: 'Hair Spa',
-        priceText: '₹499',
-        businessName: business.name,
-        phone: phone,
-        format: CreativeFormat.post,
-        createdAt: DateTime.now().subtract(const Duration(days: 5)),
-      ),
-      Creative(
-        category: CreativeCategory.festival,
-        title: 'Diwali Combo',
-        priceText: '₹799',
-        businessName: business.name,
-        phone: phone,
-        format: CreativeFormat.status,
-        createdAt: DateTime.now().subtract(const Duration(days: 7)),
-      ),
-    ]);
   }
 }
 

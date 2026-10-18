@@ -1,39 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:pehchaan/app.dart';
+import 'package:pehchaan/core/api/models.dart';
+import 'package:pehchaan/features/onboarding/language_select_screen.dart';
 
 void main() {
-  setUp(() {
-    // hydrate() awaits SharedPreferences.getInstance() on startup — without
-    // this, the platform channel call never resolves in a widget test and
-    // the app stays stuck on splash forever.
-    SharedPreferences.setMockInitialValues({});
-  });
-
-  testWidgets('Splash leads straight into Home with no login gate', (
+  testWidgets('Language picker shows both labels and returns the code', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const PehchaanApp());
-    await tester.pump(const Duration(milliseconds: 1300));
-    await tester.pumpAndSettle();
-
-    await tester.scrollUntilVisible(
-      find.text('Aaj kya promote karna hai?'),
-      300,
-      scrollable: find.byType(Scrollable).first,
+    String? chosen;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: LanguageSelectScreen(
+          languages: Language.bundled,
+          initial: 'hi',
+          onContinue: (code) => chosen = code,
+        ),
+      ),
     );
-    expect(find.text('Aaj kya promote karna hai?'), findsOneWidget);
+
+    expect(find.text('हिन्दी'), findsOneWidget);
+    expect(find.text('Hindi'), findsOneWidget);
+    expect(find.text('मराठी'), findsOneWidget);
+
+    await tester.tap(find.text('मराठी'));
+    await tester.pump();
+    await tester.tap(find.text('Continue'));
+    expect(chosen, 'mr');
   });
 
-  testWidgets('Home shows the pre-seeded mock business and creatives', (
+  testWidgets('Language picker falls back to the bundled list when empty', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const PehchaanApp());
-    await tester.pump(const Duration(milliseconds: 1300));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Raju Tailor'), findsOneWidget);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: LanguageSelectScreen(languages: const [], onContinue: (_) {}),
+      ),
+    );
+    expect(find.text('English'), findsOneWidget);
   });
 }

@@ -2,24 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:pehchaan/core/theme/app_colors.dart';
 
-/// Session check. Full-bleed violet-600, logo mark centred, nothing else. Max 1.5s.
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key, required this.onFinished});
-
-  final VoidCallback onFinished;
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(milliseconds: 1200), () {
-      if (mounted) widget.onFinished();
-    });
-  }
+/// Shown while local session state loads at launch. Full-bleed violet-600,
+/// logo mark centred, nothing else.
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,27 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:pehchaan/core/api/api_client.dart';
+import 'package:pehchaan/core/api/models.dart';
+import 'package:pehchaan/core/api/pehchaan_api.dart';
 import 'package:pehchaan/core/theme/app_colors.dart';
 import 'package:pehchaan/core/theme/app_text_styles.dart';
 import 'package:pehchaan/core/widgets/app_buttons.dart';
 
-/// Account with the lowest friction: just a phone number.
+/// Login and signup are the same call (§6.1). `+91` is drawn as a fixed
+/// prefix; only ten digits are sent.
 class PhoneLoginScreen extends StatefulWidget {
-  const PhoneLoginScreen({super.key, required this.onSendOtp});
+  const PhoneLoginScreen({super.key, required this.onOtpSent, this.initialPhone = ''});
 
-  final ValueChanged<String> onSendOtp;
+  /// Called with the ten-digit number and the server's resend cooldown.
+  final void Function(String phone, int retryAfterSec) onOtpSent;
+  final String initialPhone;
 
   @override
   State<PhoneLoginScreen> createState() => _PhoneLoginScreenState();
 }
 
 class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
-  final _phoneController = TextEditingController();
+  late final _phoneController = TextEditingController(text: widget.initialPhone);
+  bool _sending = false;
+  String? _error;
 
   @override
   void dispose() {
     _phoneController.dispose();
     super.dispose();
+  }
+
+  bool get _valid => normaliseIndianMobile(_phoneController.text) != null;
+
+  Future<void> _send() async {
+    final phone = normaliseIndianMobile(_phoneController.text);
+    if (phone == null) {
+      setState(() => _error = 'Sahi mobile number daaliye');
+      return;
+    }
+    setState(() {
+      _sending = true;
+      _error = null;
+    });
+    try {
+      final retryAfter = await PehchaanApi.sendOtp(phone);
+      if (!mounted) return;
+      widget.onOtpSent(phone, retryAfter);
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      setState(() => _error = switch (e.statusCode) {
+        400 => 'Sahi mobile number daaliye',
+        429 => e.retryAfterSec != null
+            ? '${e.message} (${e.retryAfterSec}s baad try karein)'
+            : e.message,
+        0 => 'Internet connection check karein',
+        // 503 is a provider problem, never a number problem.
+        _ => 'Code nahi bhej paaye, dobara try karein',
+      });
+    } finally {
+      if (mounted) setState(() => _sending = false);
+    }
   }
 
   @override
@@ -59,12 +99,13 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                       height: 60,
                       child: TextField(
                         controller: _phoneController,
-                        keyboardType: TextInputType.number,
-                        maxLength: 10,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        onChanged: (_) => setState(() {}),
+                        keyboardType: TextInputType.phone,
+                        autofocus: true,
+                        // Accept pasted `+91 98765-43210` / `0987…` and keep
+                        // just the ten digits.
+                        inputFormatters: [IndianMobileFormatter()],
+                        onChanged: (_) => setState(() => _error = null),
+                        onSubmitted: (_) => _valid && !_sending ? _send() : null,
                         style: AppTextStyles.body,
                         decoration: InputDecoration(
                           counterText: '',
@@ -84,12 +125,14 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide.none,
+                            borderSide: _error != null
+                                ? const BorderSide(color: AppColors.error, width: 2)
+                                : BorderSide.none,
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(14),
-                            borderSide: const BorderSide(
-                              color: AppColors.violet600,
+                            borderSide: BorderSide(
+                              color: _error != null ? AppColors.error : AppColors.violet600,
                               width: 2,
                             ),
                           ),
@@ -101,8 +144,10 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                'OTP se verify karenge. Koi password nahi.',
-                style: AppTextStyles.fieldLabel,
+                _error ?? 'OTP se verify karenge. Koi password nahi.',
+                style: AppTextStyles.fieldLabel.copyWith(
+                  color: _error != null ? AppColors.error : null,
+                ),
               ),
               const Spacer(),
               Padding(
@@ -127,15 +172,29 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                 ),
               ),
               PrimaryButton(
-                label: 'Send OTP',
-                onPressed: _phoneController.text.length == 10
-                    ? () => widget.onSendOtp(_phoneController.text)
-                    : null,
+                label: _sending ? 'Bhej rahe hain…' : 'Send OTP',
+                onPressed: _valid && !_sending ? _send : null,
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Keeps the field to ten digits, unwrapping a pasted `+91…` or `0…`
+/// prefix instead of rejecting the paste.
+class IndianMobileFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue old, TextEditingValue next) {
+    var digits = next.text.replaceAll(RegExp(r'\D'), '');
+    if (digits.length > 10) {
+      digits = normaliseIndianMobile(digits) ?? digits.substring(0, 10);
+    }
+    return TextEditingValue(
+      text: digits,
+      selection: TextSelection.collapsed(offset: digits.length),
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:pehchaan/core/widgets/app_bottom_nav.dart';
 import 'package:pehchaan/features/creative/creative_input_screen.dart';
-import 'package:pehchaan/features/home/home_screen.dart';
+import 'package:pehchaan/features/posters/poster_home_screen.dart';
 import 'package:pehchaan/features/library/my_creatives_screen.dart';
 import 'package:pehchaan/features/profile/profile_screen.dart';
 import 'package:pehchaan/features/creative/type_picker_sheet.dart';
@@ -47,7 +47,7 @@ class _RootShellState extends State<RootShell> {
       body: IndexedStack(
         index: pageIndex,
         children: [
-          HomeScreen(onSeeAllCreatives: () => setState(() => _tabIndex = 2)),
+          const PosterHomeScreen(),
           const MyCreativesScreen(),
           const ProfileScreen(),
         ],

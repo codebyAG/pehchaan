@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:pehchaan/core/theme/app_colors.dart';
 import 'package:pehchaan/core/theme/app_text_styles.dart';
@@ -16,6 +17,10 @@ class AppTextField extends StatelessWidget {
     this.onTap,
     this.onChanged,
     this.maxLines = 1,
+    this.maxLength,
+    this.inputFormatters,
+    this.errorText,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   final String label;
@@ -27,6 +32,10 @@ class AppTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
   final int maxLines;
+  final int? maxLength;
+  final List<TextInputFormatter>? inputFormatters;
+  final String? errorText;
+  final TextCapitalization textCapitalization;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +51,23 @@ class AppTextField extends StatelessWidget {
           onTap: onTap,
           onChanged: onChanged,
           maxLines: maxLines,
+          maxLength: maxLength,
+          inputFormatters: inputFormatters,
+          textCapitalization: textCapitalization,
           style: AppTextStyles.body,
           decoration: InputDecoration(
             hintText: hint,
+            counterText: '',
+            errorText: errorText,
+            errorStyle: AppTextStyles.fieldLabel.copyWith(color: AppColors.error),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: const BorderSide(color: AppColors.error, width: 2),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: const BorderSide(color: AppColors.error, width: 2),
+            ),
             hintStyle: AppTextStyles.body.copyWith(color: AppColors.mutedText),
             filled: true,
             fillColor: AppColors.violet100,

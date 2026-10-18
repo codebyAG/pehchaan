@@ -40,6 +40,10 @@ dependencies:
   gal: ^2.3.0
   share_plus: ^10.1.4
   image: ^4.2.0
+  flutter_secure_storage: ^10.3.4
+  url_launcher: ^6.3.2
+  path_provider: ^2.1.6
+  video_player: ^2.11.1
 
 dev_dependencies:
   flutter_test:
@@ -100,3 +104,14 @@ flutter:
     - family: InstrumentSans
       fonts:
         - asset: assets/fonts/InstrumentSans-Variable.ttf
+    # Poster fonts — the only ones a design's slot `font` may name (§10).
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+    - family: Baloo2
+      fonts:
+        - asset: assets/fonts/Baloo2-Variable.ttf

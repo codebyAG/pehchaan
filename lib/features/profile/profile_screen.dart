@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
 
+import 'package:pehchaan/core/api/models.dart';
+import 'package:pehchaan/core/services/sales_contact.dart';
 import 'package:pehchaan/core/state/app_state.dart';
+import 'package:pehchaan/core/state/session.dart';
 import 'package:pehchaan/core/theme/app_colors.dart';
 import 'package:pehchaan/core/theme/app_text_styles.dart';
 import 'package:pehchaan/core/widgets/rate_prompt_dialog.dart';
 import 'about_screen.dart';
 import 'contact_support_screen.dart';
-import 'edit_business_screen.dart';
 import 'help_faq_screen.dart';
 import 'language_change_screen.dart';
-import 'manage_photos_screen.dart';
+import 'package:pehchaan/features/business_setup/business_form_screen.dart';
 import 'package:pehchaan/features/library/my_creatives_screen.dart';
 import 'settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
-  void _confirmLogout(BuildContext context) {
+  void _confirmLogout(BuildContext context, {bool everywhere = false}) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Log out karna hai?', style: AppTextStyles.sectionHeading),
+        title: Text(
+          everywhere ? 'Sabhi devices se log out karna hai?' : 'Log out karna hai?',
+          style: AppTextStyles.sectionHeading,
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -32,7 +37,11 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              final session = SessionScope.of(context, listen: false);
+              Navigator.of(context).pop();
+              session.signOut(everywhere: everywhere);
+            },
             child: Text(
               'Log out',
               style: AppTextStyles.body.copyWith(
@@ -48,6 +57,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appState = AppStateScope.of(context);
+    final session = SessionScope.of(context);
     final business = appState.business;
     final creativeCount = appState.savedCreatives.length;
     final thisMonth = appState.savedCreatives
@@ -118,7 +128,7 @@ class ProfileScreen extends StatelessWidget {
                   TextButton(
                     onPressed: () => Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => const EditBusinessScreen(),
+                        builder: (_) => const BusinessFormScreen(isEdit: true),
                       ),
                     ),
                     child: Text(
@@ -159,13 +169,7 @@ class ProfileScreen extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => const MyCreativesScreen()),
               ),
             ),
-            _Row(
-              icon: Icons.photo_library_rounded,
-              label: 'Manage photos',
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const ManagePhotosScreen()),
-              ),
-            ),
+            _PlanRow(session: session),
             _Row(
               icon: Icons.language_rounded,
               label: 'Language',
@@ -223,6 +227,15 @@ class ProfileScreen extends StatelessWidget {
                     color: const Color(0xFFD94A2B),
                     fontWeight: FontWeight.w600,
                   ),
+                ),
+              ),
+            ),
+            Center(
+              child: TextButton(
+                onPressed: () => _confirmLogout(context, everywhere: true),
+                child: Text(
+                  'Sabhi devices se log out',
+                  style: AppTextStyles.fieldLabel.copyWith(color: AppColors.mutedText),
                 ),
               ),
             ),
@@ -300,6 +313,64 @@ class _Row extends StatelessWidget {
               ),
             ),
             const Icon(Icons.chevron_right_rounded, color: AppColors.mutedText),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Current access state and plan, with the sales CTA when there's no paid
+/// plan running.
+class _PlanRow extends StatelessWidget {
+  const _PlanRow({required this.session});
+
+  final SessionController session;
+
+  @override
+  Widget build(BuildContext context) {
+    final access = session.me?.access;
+    if (access == null) return const SizedBox.shrink();
+    final plan = session.content?.plan(access.planKey);
+    final ends = access.endsAt;
+    final endsLabel = ends == null ? '' : ' · ${ends.day}/${ends.month}/${ends.year} tak';
+    final label = switch (access.state) {
+      AccessState.trial => 'Free trial${plan != null ? ' (${plan.name})' : ''}$endsLabel',
+      AccessState.active => '${plan?.name ?? 'Plan'} active$endsLabel',
+      AccessState.expired => 'Plan khatam ho gaya',
+      AccessState.none => 'Koi plan nahi',
+    };
+    return InkWell(
+      onTap: access.state == AccessState.active
+          ? null
+          : () => contactSales(
+              context,
+              planName: plan?.name,
+              shopName: session.me?.business?.shopName,
+            ),
+      child: Container(
+        height: 60,
+        decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: AppColors.divider)),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.workspace_premium_rounded, color: AppColors.violet600, size: 22),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Text(
+                label,
+                style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ),
+            if (access.state != AccessState.active)
+              Text(
+                'Plan lein',
+                style: AppTextStyles.fieldLabel.copyWith(
+                  color: AppColors.violet600,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
           ],
         ),
       ),
